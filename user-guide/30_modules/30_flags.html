@@ -28,7 +28,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet" href="../../css/asciidoctor.css">
-    <link rel="stylesheet" href="../../css/highlight/github-dark.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <link rel="stylesheet" href="../../css/scribbler-global.css">
     
         <link rel="stylesheet" href="../../css/scribbler-doc.css">
@@ -44,29 +45,30 @@
 <body>
 
 <nav class="header">
-    <a href="../../"><img src="../../images/logo_without_name.svg" width="64"></a>
+    <a href="../../"><img src="../../images/logo_without_name.svg" width="43"></a>
     <h1 class="logo">Pillars <span class="logo__thin">Doc</span></h1>
     <ul class="menu">
         <div class="menu__item toggle"><span></span></div>
+        <li class="menu__item"><a href="../../" class="link link--dark"><i class="fa fa-home"></i> Home</a></li>
 
         <li class="menu__item"><a href="../../user-guide/index.html" class="link link--dark"><i class="fa fa-book"></i> User Guide</a></li>
 
         <li class="menu__item"><a href="../../contribute/10_contributing.html" class="link link--dark"><i class="fa fa-book"></i> Contribute</a></li>
 
-        <li class="menu__item"><a href="../../api/" class="link link--dark"><i class="fa fa-code"></i> API</a></li>
+        <li class="menu__item"><a href="../../api/" class="link link--dark"><i class="fa fa-cogs"></i> API</a></li>
         <li class="menu__item"><a href="https://github.com/rlemaitre/pillars/" class="link link--dark"><i class="fa fa-github"></i> Github</a></li>
-        <li class="menu__item"><a href="../../" class="link link--dark"><i class="fa fa-home"></i> Home</a></li>
+        <li class="menu__item">
+            <form action="../../search.html">
+                <input aria-label="Search this site…" autocomplete="off" class="form-control td-search-input"
+                       placeholder="Search this site…" type="search" name="q">
+            </form>
+        </li>
     </ul>
 </nav>
 
 <div class="wrapper">
 	<aside class="doc__nav">
 		
-        <form action="../../search.html">
-            <input aria-label="Search this site…" name="q" autocomplete="off" class="" placeholder="Search this site…" type="search">
-            <button aria-expanded="false" aria-label="Toggle section navigation" class="fa fa-bars" data-toggle="collapse" type="button">
-            </button>
-        </form>
         
                         <ul>
                             <li>
@@ -76,7 +78,7 @@
                                 <a class="" href="../../user-guide/10_quick-start.html">Quick Start</a>
                             </li>
                             <li>
-                                features
+                                Features
                         <ul>
                             <li>
                                 <a class="" href="../../user-guide/20_features/10_configuration.html">Configuration</a>
@@ -85,13 +87,16 @@
                                 <a class="" href="../../user-guide/20_features/20_logging.html">Logging</a>
                             </li>
                             <li>
-                                <a class="" href="../../user-guide/20_features/30_api-server.html">API Server</a>
+                                <a class="" href="../../user-guide/20_features/30_probes.html">Probes</a>
                             </li>
                             <li>
-                                <a class="" href="../../user-guide/20_features/40_admin-server.html">Admin Server</a>
+                                <a class="" href="../../user-guide/20_features/40_api-server.html">API Server</a>
                             </li>
                             <li>
                                 <a class="" href="../../user-guide/20_features/50_observability.html">Observability</a>
+                            </li>
+                            <li>
+                                <a class="" href="../../user-guide/20_features/60_admin-server.html">Admin Server</a>
                             </li>
                         </ul>
                             </li>
@@ -132,18 +137,136 @@
 <div class="sect1">
 <h2 id="_feature_flags_module">Feature Flags module</h2>
 <div class="sectionbody">
-<div class="admonitionblock note">
+<div class="paragraph">
+<p>Feature flags are a way to enable or disable features in your application.
+They are useful for many reasons, including:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Allowing you to test features in production before releasing them to all users.</p>
+</li>
+<li>
+<p>Allowing you to do a gradual rollout of a feature to a percentage of users.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Currently, feature flags are only read from the configuration file and cannot be changed at runtime.
+This means that you will need to restart your application to change the value of a feature flag.
+In the future, we plan to add support for changing feature flags at runtime and storing them in a database.</p>
+</div>
+<div class="sect2">
+<h3 id="_creating_a_feature_flag">Creating a feature flag</h3>
+<div class="paragraph">
+<p>Feature flags are defined in the <code>feature-flags</code> section of the configuration file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="yaml">feature-flags:
+  enabled: true #<i class="conum" data-value="1"></i><b>(1)</b>
+  flags:
+    - name: feature-1 #<i class="conum" data-value="2"></i><b>(2)</b>
+      status: enabled #<i class="conum" data-value="3"></i><b>(3)</b>
+    - name: feature-2
+      status: disabled</code></pre>
+</div>
+</div>
+<div class="colist arabic">
 <table>
 <tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-This documentation needs to be written.
-You can help us by <a href="../../contribute/10_contributing.html">contributing to the documentation</a>.
-</td>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Whether feature flags are enabled or not.
+If this is set to <code>false</code>, all feature flags will be disabled.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The name of the feature flag.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The status of the feature flag.
+Possible values are <code>enabled</code> and <code>disabled</code>.</td>
 </tr>
 </table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_a_feature_flag">Using a feature flag</h3>
+<div class="paragraph">
+<p>Feature flags can be used in your application by using the <code>flags</code> module on <code>Pillars</code>.</p>
+</div>
+<div class="listingblock data-noescape">
+<div class="content">
+<pre class="prettyprint highlight linenums"><code data-lang="scala">import pillars.flags.* //<i class="conum" data-value="1"></i><b>(1)</b>
+
+val flag = flag"feature-1" //<i class="conum" data-value="2"></i><b>(2)</b>
+for
+    enabled &lt;- pillars.flags.isEnabled(flag) //<i class="conum" data-value="3"></i><b>(3)</b>
+    _       &lt;- IO.whenA(enabled)(IO.println("Feature 1 is enabled")) //<i class="conum" data-value="4"></i><b>(4)</b>
+    // or
+    _       &lt;- pillars.whenEnabled(flag"feature-2")(IO.println("Feature 2 is enabled")) //<i class="conum" data-value="5"></i><b>(5)</b>
+    // or
+    _       &lt;- flag"feature-3".whenEnabled(IO.println("Feature 3 is enabled")) //<i class="conum" data-value="6"></i><b>(6)</b>
+yield ()</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Import the <code>flags</code> module to enable the <code>flag</code> string interpolator and the <code>flags</code> property on <code>Pillars</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Create a <code>Flag</code> instance by using the <code>flag</code> string interpolator.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Check if the feature flag is enabled.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>If the feature flag is enabled, perform the action you want.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Use the <code>pillars.whenEnabled</code> method to perform an action if the feature flag is enabled.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Use the <code>whenEnabled</code> method on the <code>FeatureFlag.Name</code> instance to perform an action if the feature flag is enabled.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_endpoints">Endpoints</h3>
+<div class="paragraph">
+<p>Feature flags are exposed on the <a href="../20_features/60_admin-server.html">admin server</a>.
+The defined endpoints are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>GET /flags</code> - Get all feature flags.</p>
+</li>
+<li>
+<p><code>GET /flags/+{name}+</code> - Get a specific feature flag.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Feature flags are returned in the following format:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="json">{
+  "name": "feature-1",
+  "status": "enabled"
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -225,6 +348,22 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
     </div>
 
 
+    <script src="https://giscus.app/client.js"
+            data-repo="rlemaitre/pillars"
+            data-repo-id="R_kgDOK-Le0g"
+            data-category="Comments"
+            data-category-id="DIC_kwDOK-Le0s4Ccs4S"
+            data-mapping="pathname"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="top"
+            data-theme="light"
+            data-lang="en"
+            data-loading="lazy"
+            crossorigin="anonymous"
+            async>
+    </script>
 	</article>
 	<aside class="doc__nav pop-out">
 		
@@ -233,7 +372,13 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
         <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_feature_flags_module">Feature Flags module</a></li>
+<li><a href="#_feature_flags_module">Feature Flags module</a>
+<ul class="sectlevel2">
+<li><a href="#_creating_a_feature_flag">Creating a feature flag</a></li>
+<li><a href="#_using_a_feature_flag">Using a feature flag</a></li>
+<li><a href="#_endpoints">Endpoints</a></li>
+</ul>
+</li>
 </ul>
 </div>
 
@@ -272,13 +417,13 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
     </div>
     <div class="row">built with <a href="https://doctoolchain.org">docToolchain</a> and <a href="https://jbake.org">jBake</a> <br /> theme: Custom based on <a href="https://github.com/amiechen/codrops-scribbler/">Scribbler</a></small></div>
 </footer>
-<script src="../../js/highlight.min.js"></script>
-<script src="../../js/languages/dockerfile.min.js"></script>
-<script src="../../js/languages/gradle.min.js"></script>
-<script src="../../js/languages/scala.min.js"></script>
-<script src="../../js/languages/sql.min.js"></script>
-<script src="../../js/languages/yaml.min.js"></script>
-<script src="../../js/languages/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gradle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/scala.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
 <script>hljs.highlightAll();</script>
 <script src="../../js/scribbler.js"></script>
 
