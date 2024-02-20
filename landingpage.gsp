@@ -7,24 +7,26 @@
         <code class="language-scala">
 import ... // import your dependencies
 
-object Main extends pillars.EntryPoint:
-    def app: pillars.App[IO] = new pillars.App[IO]:
-        def name        = Name("BookStore")
-        def version     = Version("0.0.1")
-        def description = Description("A simple bookstore")
+object app extends pillars.EntryPoint:
+  def app: pillars.App[IO] = new: // define your app
+    def infos: AppInfo = BuildInfo.toAppInfo // automatic description from your build
 
-        def run(pillars: Pillars[IO]): IO[Unit] =
-            import pillars.*
-            for
-                _ <- logger.info(s"📚 Welcome to \${pillars.config.name}!")
-                _ <- pillars.whenEnabled(flag"feature-1"):
-                    pillars.db.use: s =>
-                        for
-                            d <- s.unique(sql"select now()".query(timestamptz))
-                            _ <- logger.info(s"The current date is \$d.")
-                        yield ()
-                _ <- pillars.apiServer.start(endpoints.all)
-            yield ()
+    def run: Run[IO, IO[Unit]] = // enjoy!
+      for
+        _ <- Logger[IO].info(s"📚 Welcome to \${Config[IO].name}!")
+        _ <- flag"feature-1".whenEnabled:
+              DB[IO].use: session =>
+                for
+                  date <- session.unique(sql"select now()".query(timestamptz))
+                  _    <- Logger[IO].info(s"The current date is \$date.")
+                yield ()
+        _ <- HttpClient[IO].get("https://pillars.rlemaitre.com"): response =>
+              Logger[IO].info(s"Response: \${response.status}")
+        _ <- ApiServer[IO].start(endpoints.all)
+      yield ()
+      end for
+    end run
+end app
         </code>
     </pre>
 </div>
@@ -41,33 +43,33 @@ object Main extends pillars.EntryPoint:
                 <li class="tab" data-tab="maven">Maven</li>
             </ul>
             <pre class="code tab__pane active sbt">
-                <code class="highlight language-scala">libraryDependencies ++= Seq("com.rlemaitre" %% "pillars-core" % "0.0.1")</code>
+                <code class="highlight language-scala">libraryDependencies ++= Seq("com.rlemaitre" %% "pillars-core" % "${config.site_version}")</code>
             </pre>
             <pre class="code tab__pane mill">
-                <code class="highlight language-scala">ivy"com.rlemaitre::pillars-core:0.0.1"</code>
+                <code class="highlight language-scala">ivy"com.rlemaitre::pillars-core:${config.site_version}"</code>
             </pre>
             <pre class="code tab__pane scala-cli">
-                <code class="highlight language-scala">//> using dep com.rlemaitre::pillars-core:0.0.1</code>
+                <code class="highlight language-scala">//> using dep com.rlemaitre::pillars-core:${config.site_version}</code>
             </pre>
             <pre class="code tab__pane pants">
                 <code class="highlight language-scala">
 scala_artifact(
     group="com.rlemaitre",
     artifact="pillars-core",
-    version="0.0.1",
+    version="${config.site_version}",
     packages=["pillars.**"],
 )
                 </code>
             </pre>
             <pre class="code tab__pane gradle">
-                <code class="highlight language-gradle">implementation 'com.rlemaitre:pillars-core:0.0.1'</code>
+                <code class="highlight language-gradle">implementation 'com.rlemaitre:pillars-core:${config.site_version}'</code>
             </pre>
             <pre class="code tab__pane maven">
                 <code class="highlight language-xml">
 &lt;dependency>
     &lt;groupId>com.rlemaitre&lt;/groupId>
     &lt;artifactId>pillars-core&lt;/artifactId>
-    &lt;version>0.0.1&lt;/version>
+    &lt;version>${config.site_version}&lt;/version>
 &lt;/dependency>
                 </code>
             </pre>
