@@ -74,14 +74,6 @@ var documents = [
 
 {
     "id": 9,
-    "uri": "user-guide/30_modules/20_http-client.html",
-    "menu": "user-guide",
-    "title": "HTTP Client Module",
-    "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
-},
-
-{
-    "id": 10,
     "uri": "user-guide/30_modules/30_flags.html",
     "menu": "user-guide",
     "title": "Feature Flags module",
@@ -89,19 +81,27 @@ var documents = [
 },
 
 {
-    "id": 11,
-    "uri": "user-guide/30_modules/100_write-your-own-module.html",
+    "id": 10,
+    "uri": "user-guide/30_modules/20_http-client.html",
     "menu": "user-guide",
-    "title": "Write your own module",
-    "text": " Table of Contents Write your own module Write your own module This documentation needs to be written. You can help us by contributing to the documentation . "
+    "title": "HTTP Client Module",
+    "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
 },
 
 {
-    "id": 12,
+    "id": 11,
     "uri": "user-guide/30_modules/index.html",
     "menu": "user-guide",
     "title": "Optional Modules",
     "text": " Table of Contents Modules Database HTTP Client Feature Flags Write your own module Modules Pillars includes several optional modules: Database HTTP Client Feature Flags Database The database module provides a simple abstraction over the database access layer. It is based on the skunk library and provides a simple interface to execute queries and transactions. Read more HTTP Client The HTTP Client module provides a simple abstraction over the HTTP client layer. It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests. Read more Feature Flags The Feature Flags module provides a simple abstraction over the feature flags layer. Read more Write your own module You can easily write your own module by implementing the Module trait. Read more "
+},
+
+{
+    "id": 12,
+    "uri": "user-guide/30_modules/100_write-your-own-module.html",
+    "menu": "user-guide",
+    "title": "Write your own module",
+    "text": " Table of Contents Write your own module Write your own module This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
