@@ -116,6 +116,12 @@
                                 <a class="" href="../user-guide/30_modules/30_flags.html">Feature Flags module</a>
                             </li>
                             <li>
+                                <a class="" href="../user-guide/30_modules/40_redis.html">Redis Module</a>
+                            </li>
+                            <li>
+                                <a class="" href="../user-guide/30_modules/41_rabbitmq.html">RabbitMQ Module</a>
+                            </li>
+                            <li>
                                 <a class="" href="../user-guide/30_modules/100_write-your-own-module.html">Write your own module</a>
                             </li>
                         </ul>
@@ -164,7 +170,7 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-core" % "0.0.2"
+  "com.rlemaitre" %% "pillars-core" % "0.1.4"
 )</code></pre>
 </div>
 </div>
@@ -174,10 +180,10 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-db" % "0.0.2",
-  "com.rlemaitre" %% "pillars-db-migration" % "0.0.2",
-  "com.rlemaitre" %% "pillars-flags" % "0.0.2",
-  "com.rlemaitre" %% "pillars-http-client" % "0.0.2"
+  "com.rlemaitre" %% "pillars-db" % "0.1.4",
+  "com.rlemaitre" %% "pillars-db-migration" % "0.1.4",
+  "com.rlemaitre" %% "pillars-flags" % "0.1.4",
+  "com.rlemaitre" %% "pillars-http-client" % "0.1.4"
 )</code></pre>
 </div>
 </div>
@@ -200,10 +206,13 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
     def app: pillars.App[IO] = new: // <i class="conum" data-value="2"></i><b>(2)</b>
         def infos: AppInfo = BuildInfo.toAppInfo // <i class="conum" data-value="3"></i><b>(3)</b>
 
+        def endpoints = Endpoints.all
+
         def run: Run[IO, IO[Unit]] = // <i class="conum" data-value="4"></i><b>(4)</b>
+            val controllers: List[Controller[IO]] = List(HomeController(), UserController())
             for
                 _ &lt;- Logger[IO].info(s"📚 Welcome to ${Config[IO].name}!")
-                _ &lt;- DBMigration[IO].migrate("db/migrations") // <i class="conum" data-value="5"></i><b>(5)</b>
+                _ &lt;- DBMigration[IO].migrate("classpath:db-migrations") // <i class="conum" data-value="5"></i><b>(5)</b>
                 _ &lt;- flag"feature-1".whenEnabled:
                          DB[IO].use: session =&gt;
                              for
@@ -216,7 +225,7 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
                              size &lt;- response.body.compile.count
                              _    &lt;- Logger[IO].info(s"Body: $size bytes")
                          yield ()
-                _ &lt;- ApiServer[IO].start(TodoController().endpoints)
+                _ &lt;- ApiServer[IO].start(controllers.foldLeft(List.empty)(_ ++ _.endpoints))
             yield ()
             end for
         end run
@@ -323,7 +332,7 @@ In your <code>build.sbt</code>, add the following lines to your project definiti
     .settings(
       name             := "pillars-example",                                            // <i class="conum" data-value="2"></i><b>(2)</b>
       description      := "pillars-example is an example of application using pillars", // <i class="conum" data-value="3"></i><b>(3)</b>
-      libraryDependencies ++= Dependencies.tests,
+      libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),                // <i class="conum" data-value="4"></i><b>(4)</b>
       buildInfoOptions := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // <i class="conum" data-value="5"></i><b>(5)</b>
       buildInfoPackage := "example.build",                                              // <i class="conum" data-value="6"></i><b>(6)</b>
