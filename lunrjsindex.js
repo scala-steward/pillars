@@ -10,14 +10,6 @@ var documents = [
 
 {
     "id": 1,
-    "uri": "user-guide/20_features/20_logging.html",
-    "menu": "user-guide",
-    "title": "Logging",
-    "text": " Table of Contents Logging Configuration Logging in your code Logging Logging is a very important part of any application. It allows you to see what is happening in your application and to debug it. Pillars uses the scribe library for logging. Configuration The logging configuration is described in the Configuration section. Logging in your code To log something in your code, you can use the logger defined on the Pillars instance. def run(using p: Pillars[IO]): IO[Unit] = import p.* for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- logger.debug(s\"📚 The configuration is: $config\") yield () As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage. import scribe.warn import scribe.cats.io.info def foo: IO[Unit] = info(\"Hello from foo!\") def bar: Unit = warn(\"Hello from bar!\") "
-},
-
-{
-    "id": 2,
     "uri": "user-guide/20_features/10_configuration.html",
     "menu": "user-guide",
     "title": "Configuration",
@@ -25,23 +17,7 @@ var documents = [
 },
 
 {
-    "id": 3,
-    "uri": "user-guide/20_features/60_admin-server.html",
-    "menu": "user-guide",
-    "title": "Admin Server",
-    "text": " Table of Contents Admin Server Configuration Endpoints Defining administration endpoints Admin Server Pillars provides an administration server that can be used to manage the Pillars server. The administration endpoints are separated from the API server in order to ease security management. As it uses a different port, it can be protected by a firewall or use authentication on an ingress (such as nginx or caddy ). Configuration The configuration is described in the Configuration section. Endpoints By default, the administration server is available on port 19876 and exposes the following endpoints: GET /probes/healthz : the liveness probe. It always returns 200 OK and can be used to check if the server is running. GET /probes/health : the readiness probe. It returns 200 OK if the server is ready to handle requests and all probes are successful. See the Probes section for more details. Modules can add their own endpoints to the administration server. See the Flags section for the feature flags endpoints. Defining administration endpoints You can define administration endpoints easily by defining an adminControllers property in your App . "
-},
-
-{
-    "id": 4,
-    "uri": "user-guide/20_features/40_api-server.html",
-    "menu": "user-guide",
-    "title": "API Server",
-    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 5,
+    "id": 2,
     "uri": "user-guide/20_features/30_probes.html",
     "menu": "user-guide",
     "title": "Probes",
@@ -49,23 +25,15 @@ var documents = [
 },
 
 {
-    "id": 6,
-    "uri": "user-guide/30_modules/40_redis.html",
+    "id": 3,
+    "uri": "user-guide/20_features/20_logging.html",
     "menu": "user-guide",
-    "title": "Redis Module",
-    "text": " Table of Contents Redis module Redis Module Configuration Using the Redis Module Redis Operations Redis module The Redis module provides integration with redis . It uses the rediculous library. Redis Module Configuration The configuration is read from the application&#8217;s configuration file under the redis section. Using the Redis Module To use the Redis module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val redisModule = pillarsInstance.redis You can also use directly Redis[F] You can then use the redisModule to perform Redis operations. Redis Operations TODO "
+    "title": "Logging",
+    "text": " Table of Contents Logging Configuration Logging in your code Logging Logging is a very important part of any application. It allows you to see what is happening in your application and to debug it. Pillars uses the scribe library for logging. Configuration The logging configuration is described in the Configuration section. Logging in your code To log something in your code, you can use the logger defined on the Pillars instance. def run(using p: Pillars[IO]): IO[Unit] = import p.* for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- logger.debug(s\"📚 The configuration is: $config\") yield () As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage. import scribe.warn import scribe.cats.io.info def foo: IO[Unit] = info(\"Hello from foo!\") def bar: Unit = warn(\"Hello from bar!\") "
 },
 
 {
-    "id": 7,
-    "uri": "user-guide/30_modules/20_http-client.html",
-    "menu": "user-guide",
-    "title": "HTTP Client Module",
-    "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
-},
-
-{
-    "id": 8,
+    "id": 4,
     "uri": "user-guide/30_modules/15_db-migration.html",
     "menu": "user-guide",
     "title": "DB Migration Module",
@@ -73,15 +41,39 @@ var documents = [
 },
 
 {
-    "id": 9,
-    "uri": "user-guide/30_modules/10_db.html",
+    "id": 5,
+    "uri": "user-guide/20_features/60_admin-server.html",
     "menu": "user-guide",
-    "title": "Database Module",
-    "text": " Table of Contents Database module Database Configuration Using the DB Module Probe Database module The DB modules provide database connectivity and operations for the Pillars application. There are two database modules: db : the main database module using Skunk for interacting with PostgreSQL databases db-doobie : a Doobie-based database module for interacting with databases using JDBC drivers Use only one of these two modules in your application. Using both modules in the same application will result in a conflict. Database Configuration The configuration is read from the application&#8217;s configuration file under the db section. Skunk The database configuration is defined in the pillars.db.DatabaseConfig case class. It includes the following fields: host : The host of the database. port : The port of the database. database : The name of the database. username : The username for the database. password : The password for the database. system-schema : The schema for pillars configuration in the database. app-schema : The schema for the application in the database. ssl : The SSL mode for the database. Accepted values are none , trusted and system . See Skunk documentation for more information. pool-size : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. Doobie The database configuration is defined in the pillars.db_doobie.DatabaseConfig case class. It includes the following fields: driver-class-name : The JDBC driver class name. url : The JDBC URL of the database. username : The username for the database. password : The password for the database. system-schema : The schema for pillars configuration in the database. app-schema : The schema for the application in the database. pool-size : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. statement-cache : Configuration of the statement cache. It contains the following fields: enabled : A flag indicating whether to enable the statement cache. size : The size of the statement cache. sql-limit : The maximum length of the SQL string to be cached. Using the DB Module To use the DB module, you need to import it and then access it through the Pillars instance: val dbModule = pillarsInstance.db You can then use the dbModule to perform database operations. You can also use directly DB[F] to perform database operations: For Skunk: import pillars.db.* import skunk.* def foo[F[_]](using Pillars[F]) = DB[F].use: session =&gt; session.unique(sql\"SELECT 1\".query[Int]) For Doobie: import pillars.db_doobie.* import doobie.* def foo[F[_]](using Pillars[F]) = DB[F].use: xa =&gt; sql\"SELECT 1\".query[Int].unique.transact(xa) Probe The DB module provides a probe for health checks. val isHealthy: F[Boolean] = dbModule.probes.head.check This will return a boolean indicating whether the database is healthy or not. "
+    "title": "Admin Server",
+    "text": " Table of Contents Admin Server Configuration Endpoints Defining administration endpoints Admin Server Pillars provides an administration server that can be used to manage the Pillars server. The administration endpoints are separated from the API server in order to ease security management. As it uses a different port, it can be protected by a firewall or use authentication on an ingress (such as nginx or caddy ). Configuration The configuration is described in the Configuration section. Endpoints By default, the administration server is available on port 19876 and exposes the following endpoints: GET /probes/healthz : the liveness probe. It always returns 200 OK and can be used to check if the server is running. GET /probes/health : the readiness probe. It returns 200 OK if the server is ready to handle requests and all probes are successful. See the Probes section for more details. Modules can add their own endpoints to the administration server. See the Flags section for the feature flags endpoints. Defining administration endpoints You can define administration endpoints easily by defining an adminControllers property in your App . "
 },
 
 {
-    "id": 10,
+    "id": 6,
+    "uri": "user-guide/20_features/40_api-server.html",
+    "menu": "user-guide",
+    "title": "API Server",
+    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 7,
+    "uri": "user-guide/30_modules/40_redis.html",
+    "menu": "user-guide",
+    "title": "Redis Module",
+    "text": " Table of Contents Redis module Redis Module Configuration Using the Redis Module Redis Operations Redis module The Redis module provides integration with redis . It uses the rediculous library. Redis Module Configuration The configuration is read from the application&#8217;s configuration file under the redis section. Using the Redis Module To use the Redis module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val redisModule = pillarsInstance.redis You can also use directly Redis[F] You can then use the redisModule to perform Redis operations. Redis Operations TODO "
+},
+
+{
+    "id": 8,
+    "uri": "user-guide/30_modules/20_http-client.html",
+    "menu": "user-guide",
+    "title": "HTTP Client Module",
+    "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
+},
+
+{
+    "id": 9,
     "uri": "user-guide/30_modules/100_write-your-own-module.html",
     "menu": "user-guide",
     "title": "Write your own module",
@@ -89,11 +81,19 @@ var documents = [
 },
 
 {
-    "id": 11,
+    "id": 10,
     "uri": "user-guide/30_modules/30_flags.html",
     "menu": "user-guide",
     "title": "Feature Flags module",
     "text": " Table of Contents Feature Flags module Creating a feature flag Using a feature flag Endpoints Feature Flags module Feature flags are a way to enable or disable features in your application. They are useful for many reasons, including: Allowing you to test features in production before releasing them to all users. Allowing you to do a gradual rollout of a feature to a percentage of users. Currently, feature flags are only read from the configuration file and cannot be changed at runtime. This means that you will need to restart your application to change the value of a feature flag. In the future, we plan to add support for changing feature flags at runtime and storing them in a database. Creating a feature flag Feature flags are defined in the feature-flags section of the configuration file. feature-flags: enabled: true # (1) flags: - name: feature-1 # (2) status: enabled # (3) - name: feature-2 status: disabled 1 Whether feature flags are enabled or not. If this is set to false , all feature flags will be disabled. 2 The name of the feature flag. 3 The status of the feature flag. Possible values are enabled and disabled . Using a feature flag Feature flags can be used in your application by using the flags module on Pillars . import pillars.flags.* // (1) val flag = flag\"feature-1\" // (2) for enabled &lt;- pillars.flags.isEnabled(flag) // (3) _ &lt;- IO.whenA(enabled)(IO.println(\"Feature 1 is enabled\")) // (4) // or _ &lt;- pillars.whenEnabled(flag\"feature-2\")(IO.println(\"Feature 2 is enabled\")) // (5) // or _ &lt;- flag\"feature-3\".whenEnabled(IO.println(\"Feature 3 is enabled\")) // (6) yield () 1 Import the flags module to enable the flag string interpolator and the flags property on Pillars . 2 Create a Flag instance by using the flag string interpolator. 3 Check if the feature flag is enabled. 4 If the feature flag is enabled, perform the action you want. 5 Use the pillars.whenEnabled method to perform an action if the feature flag is enabled. 6 Use the whenEnabled method on the FeatureFlag.Name instance to perform an action if the feature flag is enabled. Endpoints Feature flags are exposed on the admin server . Get all feature flags The GET /admin/flags endpoint returns all feature flags. curl -X GET http://localhost:19876/admin/flags The response is a JSON array of feature flags. [ { \"name\": \"feature-1\", \"status\": \"enabled\" }, { \"name\": \"feature-2\", \"status\": \"disabled\" } ] Get a specific feature flag The GET /admin/flags/+{name}+ endpoint returns a specific feature flag. curl -X GET http://localhost:19876/admin/flags/feature-1 The response is a JSON object with the name and status of the feature flag. { \"name\": \"feature-1\", \"status\": \"enabled\" } Update a specific feature flag The PUT /admin/flags/+{name}+ endpoint updates a specific feature flag. curl -X PUT -H \"Content-Type: application/json\" -d '{\"status\": \"disabled\"}' http://localhost:19876/admin/flags/feature-1 The request body should be a JSON object with the new status of the feature flag. { \"status\": \"disabled\" } The response is a JSON object with the name and status of the feature flag. { \"name\": \"feature-1\", \"status\": \"disabled\" } "
+},
+
+{
+    "id": 11,
+    "uri": "user-guide/30_modules/10_db.html",
+    "menu": "user-guide",
+    "title": "Database Module",
+    "text": " Table of Contents Database module Database Configuration Using the DB Module Probe Database module The DB modules provide database connectivity and operations for the Pillars application. There are two database modules: db : the main database module using Skunk for interacting with PostgreSQL databases db-doobie : a Doobie-based database module for interacting with databases using JDBC drivers Use only one of these two modules in your application. Using both modules in the same application will result in a conflict. Database Configuration The configuration is read from the application&#8217;s configuration file under the db section. Skunk The database configuration is defined in the pillars.db.DatabaseConfig case class. It includes the following fields: host : The host of the database. port : The port of the database. database : The name of the database. username : The username for the database. password : The password for the database. system-schema : The schema for pillars configuration in the database. app-schema : The schema for the application in the database. ssl : The SSL mode for the database. Accepted values are none , trusted and system . See Skunk documentation for more information. pool-size : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. Doobie The database configuration is defined in the pillars.db_doobie.DatabaseConfig case class. It includes the following fields: driver-class-name : The JDBC driver class name. url : The JDBC URL of the database. username : The username for the database. password : The password for the database. system-schema : The schema for pillars configuration in the database. app-schema : The schema for the application in the database. pool-size : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. statement-cache : Configuration of the statement cache. It contains the following fields: enabled : A flag indicating whether to enable the statement cache. size : The size of the statement cache. sql-limit : The maximum length of the SQL string to be cached. Using the DB Module To use the DB module, you need to import it and then access it through the Pillars instance: val dbModule = pillarsInstance.db You can then use the dbModule to perform database operations. You can also use directly DB[F] to perform database operations: For Skunk: import pillars.db.* import skunk.* def foo[F[_]](using Pillars[F]) = DB[F].use: session =&gt; session.unique(sql\"SELECT 1\".query[Int]) For Doobie: import pillars.db_doobie.* import doobie.* def foo[F[_]](using Pillars[F]) = DB[F].use: xa =&gt; sql\"SELECT 1\".query[Int].unique.transact(xa) Probe The DB module provides a probe for health checks. val isHealthy: F[Boolean] = dbModule.probes.head.check This will return a boolean indicating whether the database is healthy or not. "
 },
 
 {
