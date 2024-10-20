@@ -64,7 +64,7 @@ object Dependencies {
       "com.outr" %% "scribe-cats"       % "3.15.1",
       "com.outr" %% "scribe-slf4j"      % "3.15.0",
       "com.outr" %% "scribe-json-circe" % "3.15.0",
-      "com.outr" %% "scribe-file"       % "3.15.0"
+      "com.outr" %% "scribe-file"       % "3.15.1"
     )
 
     val tests: Seq[ModuleID] = Seq(
