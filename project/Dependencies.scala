@@ -27,7 +27,7 @@ object versions {
     val testContainers   = "0.41.5"
 
     object munit {
-        val core       = "1.0.3"
+        val core       = "1.0.4"
         val catsEffect = "2.0.0"
         val scalacheck = "1.0.0"
         val http4s     = "1.1.0"
@@ -102,17 +102,35 @@ object Dependencies {
       "com.outr" %% "scribe-file"       % versions.scribe
     )
 
-    val tests: Seq[ModuleID] = Seq(
-      "org.scalameta"      %% "munit"             % versions.munit.core       % Test,
-      "org.typelevel"      %% "munit-cats-effect" % versions.munit.catsEffect % Test,
-      "org.scalameta"      %% "munit-scalacheck"  % versions.munit.scalacheck % Test,
-      "io.github.iltotore" %% "iron-scalacheck"   % versions.iron             % Test
+    val munit: Seq[ModuleID] = Seq(
+      "org.scalameta" %% "munit"             % versions.munit.core,
+      "org.typelevel" %% "munit-cats-effect" % versions.munit.catsEffect
     )
 
+    val scalaCheck: Seq[ModuleID] = Seq(
+      "org.scalameta"      %% "munit-scalacheck" % versions.munit.scalacheck,
+      "io.github.iltotore" %% "iron-scalacheck"  % versions.iron
+    )
+    val tests: Seq[ModuleID]      = (munit ++ scalaCheck).map(_ % Test)
+
     val testContainers: Seq[ModuleID] = Seq(
-      "com.dimafeng" %% "testcontainers-scala-munit"      % versions.testContainers % Test,
-      "com.dimafeng" %% "testcontainers-scala-postgresql" % versions.testContainers % Test,
-      "com.dimafeng" %% "testcontainers-scala-rabbitmq"   % versions.testContainers % Test
+      "com.dimafeng" %% "testcontainers-scala-munit" % versions.testContainers
+    )
+
+    val testContainersJdbc: Seq[ModuleID] = testContainers ++ Seq(
+      "com.dimafeng" %% "testcontainers-scala-jdbc" % versions.testContainers
+    )
+
+    val testContainersPostgres: Seq[ModuleID] = testContainers ++ Seq(
+      "com.dimafeng" %% "testcontainers-scala-postgresql" % versions.testContainers
+    )
+
+    val testContainersRabbit: Seq[ModuleID] = testContainers ++ Seq(
+      "com.dimafeng" %% "testcontainers-scala-rabbitmq" % versions.testContainers
+    )
+
+    val testContainersRedis: Seq[ModuleID] = testContainers ++ Seq(
+      "com.dimafeng" %% "testcontainers-scala-redis" % versions.testContainers
     )
 
     val observability: Seq[ModuleID] = Seq(
