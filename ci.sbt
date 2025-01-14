@@ -94,6 +94,7 @@ val websitePublication = WorkflowJob(
   ) ++
       WorkflowStep.SetupJava(List(JavaSpec.temurin("17"))) ++
       List(
+        WorkflowStep.SetupSbt,
         WorkflowStep.Run(
           name = Some("Install docToolchain"),
           commands = List("./dtcw local install doctoolchain")

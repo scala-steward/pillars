@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build and Test
+    name: Test
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -33,13 +33,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     steps:
-      - name: Install sbt
-        uses: sbt/setup-sbt@v1
-
       - name: Checkout current branch (full)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Setup sbt
+        uses: sbt/setup-sbt@v1
 
       - name: Setup Java (graalvm@21)
         id: setup-java-graalvm-21
@@ -100,13 +100,13 @@ jobs:
         java: [graalvm@21]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Install sbt
-        uses: sbt/setup-sbt@v1
-
       - name: Checkout current branch (full)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Setup sbt
+        uses: sbt/setup-sbt@v1
 
       - name: Setup Java (graalvm@21)
         id: setup-java-graalvm-21
@@ -160,17 +160,17 @@ jobs:
     if: github.event.repository.fork == false && github.event_name != 'pull_request'
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-22.04]
         java: [graalvm@21]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Install sbt
-        uses: sbt/setup-sbt@v1
-
       - name: Checkout current branch (full)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Setup sbt
+        uses: sbt/setup-sbt@v1
 
       - name: Setup Java (graalvm@21)
         id: setup-java-graalvm-21
@@ -194,7 +194,7 @@ jobs:
     name: Validate Steward Config
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-22.04]
         java: [temurin@11]
     runs-on: ${{ matrix.os }}
     steps:
@@ -340,6 +340,9 @@ jobs:
       - name: sbt update
         if: matrix.java == 'temurin@17' && steps.setup-java-temurin-17.outputs.cache-hit == 'false'
         run: sbt +update
+
+      - name: Setup sbt
+        uses: sbt/setup-sbt@v1
 
       - name: Install docToolchain
         run: ./dtcw local install doctoolchain
