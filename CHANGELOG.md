@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.4.4] - 2025-01-14
+### :sparkles: New Features
+- [`259f46e`](https://github.com/FunktionalIO/pillars/commit/259f46ea6b4bec4ec31ecab29f752d0e9355f175) - [#168](https://github.com/FunktionalIO/pillars/pull/168) Add test suite allowing easy pillars testing *(PR [#207](https://github.com/FunktionalIO/pillars/pull/207) by [@rlemaitre](https://github.com/rlemaitre))*
+  - :arrow_lower_right: *addresses issue [#168](https://github.com/FunktionalIO/pillars/issues/168) opened by [@rlemaitre](https://github.com/rlemaitre)*
+
+### :bug: Bug Fixes
+- [`dadeb49`](https://github.com/FunktionalIO/pillars/commit/dadeb494e99bfc333c8426f6e07a8ab070519e13) - **core**: [#204](https://github.com/FunktionalIO/pillars/pull/204) Use enabled config from traces & metrics to configure observability *(PR [#206](https://github.com/FunktionalIO/pillars/pull/206) by [@moronyoh](https://github.com/moronyoh))*
+
+### :wrench: Chores
+- [`0b36953`](https://github.com/FunktionalIO/pillars/commit/0b36953e83f9f6bac866e7330ee68f1261b11e5b) - Update circe-yaml from 0.15.1 to 0.15.3 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`adf1503`](https://github.com/FunktionalIO/pillars/commit/adf1503ad7529ac36f121ca836ef3fd3a74717c1) - Update http4s-circe from 0.23.29 to 0.23.30 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`5bdc623`](https://github.com/FunktionalIO/pillars/commit/5bdc6234d9c6f1f33e5dd2b6f11e54f633a4a4b3) - Update http4s-core from 0.23.29 to 0.23.30 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`8e65e5f`](https://github.com/FunktionalIO/pillars/commit/8e65e5fb77a45ef3080c76bb4053ceeced8f9109) - Update http4s-dsl from 0.23.29 to 0.23.30 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`a4eaa96`](https://github.com/FunktionalIO/pillars/commit/a4eaa964c3c8cff3116eada7031b12bab7762291) - **core**: Configure Scala Steward to not upgrade Scala 3 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`5c31e65`](https://github.com/FunktionalIO/pillars/commit/5c31e654abc30125c03fbaea49a606b81669d8ee) - Update testcontainers-scala-munit from 0.41.4 to 0.41.5 *(commit by [@scala-steward](https://github.com/scala-steward))*
+
+
 ## [v0.4.2] - 2024-12-05
 ### :bug: Bug Fixes
 - [`20db934`](https://github.com/FunktionalIO/pillars/commit/20db934af474f566f2a6b2073d547403b82c4e64) - **core**: Use default CORS policy *(commit by [@rlemaitre](https://github.com/rlemaitre))*
@@ -316,3 +333,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.4.0]: https://github.com/FunktionalIO/pillars/compare/v0.3.23...v0.4.0
 [v0.4.1]: https://github.com/FunktionalIO/pillars/compare/v0.4.0...v0.4.1
 [v0.4.2]: https://github.com/FunktionalIO/pillars/compare/v0.4.1...v0.4.2
+[v0.4.4]: https://github.com/FunktionalIO/pillars/compare/v0.4.3...v0.4.4
