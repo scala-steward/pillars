@@ -64,7 +64,7 @@ val releasePreparation = WorkflowJob(
     ),
     WorkflowStep.Use(
       name = Some("Create release"),
-      ref = UseRef.Public("ncipollo", "release-action", "v1.14.0"),
+      ref = UseRef.Public("ncipollo", "release-action", "v1.15.0"),
       cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
       params = Map(
         "allowUpdates" -> "true",
