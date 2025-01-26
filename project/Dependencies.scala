@@ -7,7 +7,7 @@ object versions {
     val catsEffect       = "3.5.7"
     val circe            = "0.14.10"
     val circeYaml        = "0.15.3"
-    val decline          = "2.4.1"
+    val decline          = "2.5.0"
     val doobie           = "1.0.0-RC6"
     val flyway           = "11.1.1"
     val fs2              = "3.11.0"
