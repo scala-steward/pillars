@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.4.5] - 2025-01-26
+### :sparkles: New Features
+- [`5818ca1`](https://github.com/FunktionalIO/pillars/commit/5818ca1a1e704ba172314d68616ad03d1623d85b) - [#209](https://github.com/FunktionalIO/pillars/pull/209) add custom attibutes from config for metrics & traces *(PR [#210](https://github.com/FunktionalIO/pillars/pull/210) by [@moronyoh](https://github.com/moronyoh))*
+
+### :wrench: Chores
+- [`ec81efd`](https://github.com/FunktionalIO/pillars/commit/ec81efd33d3ad5302e1e60074ec8be3e5afae8df) - Update skunk-core from 1.0.0-M8 to 1.0.0-M10 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`1d6d562`](https://github.com/FunktionalIO/pillars/commit/1d6d562bf4d4db0dcb46f4ee25b78e5829cdf038) - Update cats-core from 2.12.0 to 2.13.0 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`32c1c8e`](https://github.com/FunktionalIO/pillars/commit/32c1c8ebbcd347ed818ac6daa24c3ba1744d2221) - Update scalafmt-core from 3.8.3 to 3.8.6 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`fa14ce4`](https://github.com/FunktionalIO/pillars/commit/fa14ce499b1a7b720438574e36d3b7ae9e106366) - Update munit-scalacheck from 1.0.0 to 1.1.0 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`545a745`](https://github.com/FunktionalIO/pillars/commit/545a7458ffb3a474c37d538ead26102d8127e194) - Update munit from 1.0.4 to 1.1.0 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`0f76a37`](https://github.com/FunktionalIO/pillars/commit/0f76a37b05c1970d707fe1b01b5931ffb2b0c015) - Update sbt from 1.10.6 to 1.10.7 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`d92d589`](https://github.com/FunktionalIO/pillars/commit/d92d589bc8cae2582e2e27c8ffe0b710b9b49c96) - Update postgresql from 42.7.4 to 42.7.5 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`562b036`](https://github.com/FunktionalIO/pillars/commit/562b036fe02f85a47027b030d009097fe730ae9f) - Update http4s-netty-client from 0.5.21 to 0.5.22 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`569bd6c`](https://github.com/FunktionalIO/pillars/commit/569bd6c7a44ac6f7b1570894b5ef96c34829d385) - Update http4s-netty-client from 0.5.21 to 0.5.22 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`914e218`](https://github.com/FunktionalIO/pillars/commit/914e218d3d21ef55e795bd01ab6723018058de02) - Update fs2-rabbit from 5.3.0 to 5.4.0 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`49de924`](https://github.com/FunktionalIO/pillars/commit/49de924c7d970b00fca98036559910e57dbf6ac8) - Update tapir-http4s-client from 1.11.10 to 1.11.13 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`ac26429`](https://github.com/FunktionalIO/pillars/commit/ac264292adf60333ffc53a5a9c35d35bd8067336) - Update scribe from 3.15.3 to 3.16.0 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`2be78cc`](https://github.com/FunktionalIO/pillars/commit/2be78cc22df255cfb7c029578d5959d8c232d3b2) - Update decline from 2.4.1 to 2.5.0 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`95035b6`](https://github.com/FunktionalIO/pillars/commit/95035b685328a33ca41db339630079f93b6a8089) - Update testcontainers-scala-jdbc from 0.41.5 to 0.41.8 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`7a1a6a6`](https://github.com/FunktionalIO/pillars/commit/7a1a6a6d7a2b6cf127e861172065084aa5fbcfde) - Upgrade to scala 3.6.3 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.4.4] - 2025-01-14
 ### :sparkles: New Features
 - [`259f46e`](https://github.com/FunktionalIO/pillars/commit/259f46ea6b4bec4ec31ecab29f752d0e9355f175) - [#168](https://github.com/FunktionalIO/pillars/pull/168) Add test suite allowing easy pillars testing *(PR [#207](https://github.com/FunktionalIO/pillars/pull/207) by [@rlemaitre](https://github.com/rlemaitre))*
@@ -334,3 +356,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.4.1]: https://github.com/FunktionalIO/pillars/compare/v0.4.0...v0.4.1
 [v0.4.2]: https://github.com/FunktionalIO/pillars/compare/v0.4.1...v0.4.2
 [v0.4.4]: https://github.com/FunktionalIO/pillars/compare/v0.4.3...v0.4.4
+[v0.4.5]: https://github.com/FunktionalIO/pillars/compare/v0.4.4...v0.4.5
