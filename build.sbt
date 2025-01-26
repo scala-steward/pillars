@@ -30,7 +30,10 @@ ThisBuild / tlCiDependencyGraphJob   := true
 ThisBuild / autoAPIMappings          := true
 
 lazy val sharedSettings = Seq(
-  scalaVersion   := "3.5.2",
+  scalaVersion   := versions.scala,
+  scalacOptions ++= Seq(
+    "-source:3.5"
+  ),
   libraryDependencies ++= Seq(
     "org.scalameta" %% "munit" % versions.munit.core % Test
   ),

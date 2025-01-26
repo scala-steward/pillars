@@ -42,6 +42,7 @@ object graph:
                 Left(GraphError.MissingDependency(missing))
             else
                 loop(items, List.empty, Set.empty, Set.empty)
+    end extension
 
     enum GraphError(val number: ErrorNumber) extends PillarsError:
         override def code: Code = Code("GRAPH")

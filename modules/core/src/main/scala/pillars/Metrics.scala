@@ -43,22 +43,22 @@ object Metrics:
         "http.response.status"      -> {
             case Right(r) =>
                 r.code match
-                    case c if c.isInformational => "1xx"
-                    case c if c.isSuccess       => "2xx"
-                    case c if c.isRedirect      => "3xx"
-                    case c if c.isClientError   => "4xx"
-                    case c if c.isServerError   => "5xx"
-                    case _                      => ""
-            case Left(_)  => "5xx"
+                    case c if c.isInformational => "1xx".some
+                    case c if c.isSuccess       => "2xx".some
+                    case c if c.isRedirect      => "3xx".some
+                    case c if c.isClientError   => "4xx".some
+                    case c if c.isServerError   => "5xx".some
+                    case _                      => None
+            case Left(_)  => "5xx".some
         },
         "http.response.status_code" -> {
-            case Right(r) => r.code.toString
-            case Left(_)  => "500"
+            case Right(r) => r.code.toString.some
+            case Left(_)  => "500".some
         },
         "error.type"                -> {
-            case Left(ex: PillarsError) => ex.code
-            case Left(ex)               => ex.getClass.getName
-            case _                      => ""
+            case Left(ex: PillarsError) => ex.code.some
+            case Left(ex)               => ex.getClass.getName.some
+            case _                      => None
         }
       )
     )
@@ -248,7 +248,7 @@ object Metrics:
     private def asOpenTelemetryAttributes(res: Either[Throwable, ServerResponse[?]], phase: Option[String]) =
         val attributes = labels.forResponse
             .foldLeft(List.empty[Attribute[String]]): (b, label) =>
-                b :+ Attribute(AttributeKey.string(label._1), label._2(res))
+                b :+ Attribute(AttributeKey.string(label._1), label._2(res).getOrElse(""))
         phase match
             case Some(value) => attributes :+ Attribute(AttributeKey.string(labels.forResponsePhase.name), value)
             case None        => attributes

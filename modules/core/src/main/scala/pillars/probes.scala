@@ -23,7 +23,6 @@ import pillars.probes.endpoints.*
 import pillars.probes.views.CheckStatus
 import pillars.probes.views.HealthStatus
 import scala.concurrent.duration.*
-import sttp.model.*
 import sttp.tapir.Schema
 import sttp.tapir.given
 import sttp.tapir.json.circe.jsonBody
@@ -155,13 +154,16 @@ object probes:
 
     object endpoints:
         private val prefix = baseEndpoint.in("probes")
-        def liveness       = prefix.get.in("healthz").description("Liveness probe").out(stringBody)
-        def readiness      =
+        def liveness       =
+            prefix.get.in("healthz").description("Liveness probe").out(stringBody)
+
+        def readiness =
             prefix.get
                 .in("health")
                 .description("Readiness probe")
                 .out(jsonBody[HealthStatus])
-        def all            = List(liveness, readiness)
+
+        def all = List(liveness, readiness)
     end endpoints
     object views:
         final case class HealthStatus(status: Status, checks: List[CheckStatus]) derives Codec.AsObject, Schema

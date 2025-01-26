@@ -15,14 +15,16 @@ import sttp.tapir.codec.iron.*
 import sttp.tapir.codec.iron.given
 
 package object flags:
-    given Encoder[Status] = Encoder.encodeString.contramap:
+    given Encoder[Status] = Encoder.encodeString.contramap {
         case Status.Enabled  => "enabled"
         case Status.Disabled => "disabled"
+    }
 
-    given Decoder[Status] = Decoder.decodeString.emap:
+    given Decoder[Status] = Decoder.decodeString.emap {
         case "enabled"  => Right(Status.Enabled)
         case "disabled" => Right(Status.Disabled)
         case other      => Left(s"Invalid status $other")
+    }
 
     given Schema[Status] = Schema.derived
 

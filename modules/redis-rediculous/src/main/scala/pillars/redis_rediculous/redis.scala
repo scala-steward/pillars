@@ -41,7 +41,7 @@ final case class Redis[F[_]: MonadCancelThrow](config: RedisConfig, connection: 
         val probe = new Probe[F]:
             override def component: Component = Component(Component.Name("redis"), Component.Type.Datastore)
             override def check: F[Boolean]    = connection.use { client =>
-                RedisCommands.ping[io.chrisdavenport.rediculous.Redis[F, *]].run(client) map {
+                RedisCommands.ping[io.chrisdavenport.rediculous.Redis[F, *]].run(client).map {
                     case Ok | Pong => true
                     case _         => false
                 }
