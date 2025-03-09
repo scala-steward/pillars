@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.5.0] - 2025-03-09
+### :boom: BREAKING CHANGES
+- due to [`026041c`](https://github.com/FunktionalIO/pillars/commit/026041cc843e2c5c2a86378b8ae6617fed715712) - Move to io.funktional org *(PR [#218](https://github.com/FunktionalIO/pillars/pull/218) by [@rlemaitre](https://github.com/rlemaitre))*:
+
+  users will need to modify their dependencies  
+  to io.funktional
+
+
+### :wrench: Chores
+- [`0fbbcb9`](https://github.com/FunktionalIO/pillars/commit/0fbbcb9b94cd076b8f9cc66fa0bd6a104cefa822) - Update doobie-core, doobie-hikari from 1.0.0-RC6 to 1.0.0-RC7 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`3bdc486`](https://github.com/FunktionalIO/pillars/commit/3bdc4869ebffb91953008ee901df28f092998b8f) - Patches/Minor updates *(PR [#203](https://github.com/FunktionalIO/pillars/pull/203) by [@scala-steward](https://github.com/scala-steward))*
+- [`ba1c3da`](https://github.com/FunktionalIO/pillars/commit/ba1c3dab88193f42bd157ea2a5459c3962874c65) - Update flyway-core from 11.3.1 to 11.3.2 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`1cebd0a`](https://github.com/FunktionalIO/pillars/commit/1cebd0a1cd212c0ea6e37e51fbc0f62711222062) - Update tapir-http4s-client from 1.11.14 to 1.11.17 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`9b65e5b`](https://github.com/FunktionalIO/pillars/commit/9b65e5b49160c28504e886f0131703479ced48fe) - Update flyway-core from 11.3.2 to 11.3.4 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`0ff5093`](https://github.com/FunktionalIO/pillars/commit/0ff5093562874f2331851169c2ee16020cc9b8c3) - Update sbt from 1.10.7 to 1.10.10 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`01f1ab2`](https://github.com/FunktionalIO/pillars/commit/01f1ab295f08ae7dde12db81abb4e3f9fb0725aa) - Update scalafmt-core from 3.8.6 to 3.9.2 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`5264f0a`](https://github.com/FunktionalIO/pillars/commit/5264f0a4cf4509065b5ead4da92e079746195f09) - Update doobie-core, doobie-hikari from 1.0.0-RC7 to 1.0.0-RC8 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`c4af955`](https://github.com/FunktionalIO/pillars/commit/c4af9552e2abcf4b40d39bb4c9501c86c44fd403) - Update scalafmt-core from 3.9.2 to 3.9.3 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`026041c`](https://github.com/FunktionalIO/pillars/commit/026041cc843e2c5c2a86378b8ae6617fed715712) - **release**: Move to io.funktional org *(PR [#218](https://github.com/FunktionalIO/pillars/pull/218) by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.4.5] - 2025-01-26
 ### :sparkles: New Features
 - [`5818ca1`](https://github.com/FunktionalIO/pillars/commit/5818ca1a1e704ba172314d68616ad03d1623d85b) - [#209](https://github.com/FunktionalIO/pillars/pull/209) add custom attibutes from config for metrics & traces *(PR [#210](https://github.com/FunktionalIO/pillars/pull/210) by [@moronyoh](https://github.com/moronyoh))*
@@ -357,3 +378,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.4.2]: https://github.com/FunktionalIO/pillars/compare/v0.4.1...v0.4.2
 [v0.4.4]: https://github.com/FunktionalIO/pillars/compare/v0.4.3...v0.4.4
 [v0.4.5]: https://github.com/FunktionalIO/pillars/compare/v0.4.4...v0.4.5
+[v0.5.0]: https://github.com/FunktionalIO/pillars/compare/v0.4.5...v0.5.0
