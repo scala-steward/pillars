@@ -1,7 +1,7 @@
 import xerial.sbt.Sonatype.GitHubHosting
 import xerial.sbt.Sonatype.sonatypeCentralHost
 
-ThisBuild / tlBaseVersion := "0.4" // your current series x.y
+ThisBuild / tlBaseVersion := "0.5" // your current series x.y
 
 ThisBuild / organization := "io.funktional"
 ThisBuild / homepage     := Some(url("https://pillars.dev"))
