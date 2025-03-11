@@ -40,6 +40,7 @@ package object flags:
 
     extension (inline ctx: StringContext)
         inline def flag(inline args: Any*): Flag = ${ FlagLiteral('ctx, 'args) }
+    // noinspection ScalaWeakerAccess
     object FlagLiteral extends Literally[Flag]:
         override def validate(s: String)(using Quotes): Either[String, Expr[Flag]] =
             if Flag.rtc.test(s) then Right('{ Flag.applyUnsafe(${ Expr(s) }) })

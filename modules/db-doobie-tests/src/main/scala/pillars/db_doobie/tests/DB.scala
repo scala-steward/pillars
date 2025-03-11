@@ -23,7 +23,7 @@ case class DB(container: JdbcDatabaseContainer) extends ModuleSupport:
 
     override def key: Module.Key = pillars.db_doobie.DB.key
 
-    override def load[F[_]: Async: Network: Tracer: Console](
+    override def load[F[_]: {Async, Network, Tracer, Console}](
         context: ModuleSupport.Context[F],
         modules: Modules[F]
     ): Resource[F, pillars.db_doobie.DB[F]] = pillars.db_doobie.DB.load[F](dbConfig)

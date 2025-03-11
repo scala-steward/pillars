@@ -40,11 +40,12 @@ final case class Observability[F[_]](tracer: Tracer[F], metrics: Meter[F], inter
     export tracer.spanBuilder
 end Observability
 object Observability:
-    def apply[F[_]: Pillars]: Run[F, Observability[F]] = Pillars[F].observability
-    def noop[F[_]: LiftIO: Async]: F[Observability[F]] =
+    def apply[F[_]: Pillars]: Run[F, Observability[F]]   = Pillars[F].observability
+    def noop[F[_]: {LiftIO, Async}]: F[Observability[F]] =
         Observability(Tracer.noop[F], Meter.noop[F], EndpointInterceptor.noop[F]).pure[F]
 
-    def init[F[_]: LiftIO: Async: Parallel: Console](appInfo: AppInfo, config: Config): Resource[F, Observability[F]] =
+    def init[F[_]: {LiftIO, Async, Parallel,
+        Console}](appInfo: AppInfo, config: Config): Resource[F, Observability[F]] =
         if config.isEnabled then
             for
                 otel4s       <- OpenTelemetrySdk.autoConfigured[F]: builder =>
@@ -98,7 +99,7 @@ object Observability:
 
     private type ServiceNameConstraint = Not[Blank]
     opaque type ServiceName <: String  = String :| ServiceNameConstraint
-    object ServiceName extends RefinedTypeOps[String, ServiceNameConstraint, ServiceName]
+    private object ServiceName extends RefinedTypeOps[String, ServiceNameConstraint, ServiceName]
 
     extension [A <: String](value: A)
         def toAttribute(name: String): Attribute[String] = Attribute(name, value)

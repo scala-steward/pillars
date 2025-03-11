@@ -62,7 +62,7 @@ object RabbitMQ extends ModuleSupport:
     override type M[F[_]] = RabbitMQ[F]
     override val key: Module.Key = RabbitMQ.Key
 
-    override def load[F[_]: Async: Network: Tracer: Console](
+    override def load[F[_]: {Async, Network, Tracer, Console}](
         context: ModuleSupport.Context[F],
         modules: Modules[F]
     ): Resource[F, RabbitMQ[F]] =

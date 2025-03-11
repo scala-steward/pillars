@@ -23,7 +23,7 @@ case class Redis(container: RedisContainer) extends ModuleSupport:
 
     override def key: Module.Key = pillars.redis_rediculous.Redis.key
 
-    override def load[F[_]: Async: Network: Tracer: Console](
+    override def load[F[_]: {Async, Network, Tracer, Console}](
         context: ModuleSupport.Context[F],
         modules: Modules[F]
     ): Resource[F, pillars.redis_rediculous.Redis[F]] = pillars.redis_rediculous.Redis.load[F](redisConfig)

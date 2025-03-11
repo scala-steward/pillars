@@ -40,12 +40,10 @@ final case class Redis[F[_]: MonadCancelThrow](config: RedisConfig, connection: 
     override def probes: List[Probe[F]] =
         val probe = new Probe[F]:
             override def component: Component = Component(Component.Name("redis"), Component.Type.Datastore)
-            override def check: F[Boolean]    = connection.use { client =>
-                RedisCommands.ping[io.chrisdavenport.rediculous.Redis[F, *]].run(client).map {
+            override def check: F[Boolean]    = connection.use: client =>
+                RedisCommands.ping[io.chrisdavenport.rediculous.Redis[F, *]].run(client).map:
                     case Ok | Pong => true
                     case _         => false
-                }
-            }
         probe.pure[List]
     end probes
 end Redis
@@ -58,7 +56,7 @@ object Redis extends ModuleSupport:
     override type M[F[_]] = Redis[F]
     override val key: Module.Key = Redis.Key
 
-    def load[F[_]: Async: Network: Tracer: Console](
+    def load[F[_]: {Async, Network, Tracer, Console}](
         context: ModuleSupport.Context[F],
         modules: Modules[F]
     ): Resource[F, Redis[F]] =
@@ -72,11 +70,11 @@ object Redis extends ModuleSupport:
         yield connection
         end for
     end load
-    def load[F[_]: Async: Network: Tracer: Console](config: RedisConfig): Resource[F, Redis[F]] =
+    def load[F[_]: {Async, Network, Tracer, Console}](config: RedisConfig): Resource[F, Redis[F]] =
         create(config).pure[Resource[F, *]]
     end load
 
-    private def create[F[_]: Async: Network: Tracer: Console](config: RedisConfig) =
+    private def create[F[_]: {Async, Network, Tracer, Console}](config: RedisConfig) =
         val builder = RedisConnection.queued[F]
             .withHost(config.host)
             .withPort(config.port)

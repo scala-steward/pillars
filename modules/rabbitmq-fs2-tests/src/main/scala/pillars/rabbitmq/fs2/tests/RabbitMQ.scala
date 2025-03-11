@@ -24,7 +24,7 @@ case class RabbitMQ(container: RabbitMQContainer) extends ModuleSupport:
 
     override def key: Module.Key = RabbitMQModule.Key
 
-    override def load[F[_]: Async: Network: Tracer: Console](
+    override def load[F[_]: {Async, Network, Tracer, Console}](
         context: ModuleSupport.Context[F],
         modules: Modules[F]
     ): Resource[F, RabbitMQModule[F]] = RabbitMQModule(config)

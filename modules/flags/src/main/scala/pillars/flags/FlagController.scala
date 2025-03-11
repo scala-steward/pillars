@@ -55,11 +55,14 @@ object FlagController:
     object FlagEndpoints:
         private val prefix = baseEndpoint.in("flags")
 
-        def list = prefix.get.out(jsonBody[List[FeatureFlag]])
+        def list: Endpoint[Unit, Unit, (StatusCode, PillarsError.View), List[FeatureFlag], Any] =
+            prefix.get.out(jsonBody[List[FeatureFlag]])
 
-        def get = prefix.get.in(path[Flag]("name")).out(jsonBody[FeatureFlag])
+        def get: Endpoint[Unit, Flag, (StatusCode, PillarsError.View), FeatureFlag, Any] =
+            prefix.get.in(path[Flag]("name")).out(jsonBody[FeatureFlag])
 
-        def edit = prefix.put.in(path[Flag]("name")).in(jsonBody[FlagDetails]).out(jsonBody[FeatureFlag])
+        def edit: Endpoint[Unit, (Flag, FlagDetails), (StatusCode, PillarsError.View), FeatureFlag, Any] =
+            prefix.put.in(path[Flag]("name")).in(jsonBody[FlagDetails]).out(jsonBody[FeatureFlag])
     end FlagEndpoints
 
 end FlagController

@@ -12,6 +12,7 @@ import com.comcast.ip4s.*
 import io.circe.Codec
 import io.circe.derivation.Configuration
 import pillars.AdminServer.Config
+import sttp.model.StatusCode
 import sttp.tapir.*
 
 final case class AdminServer[F[_]: Async](
@@ -46,7 +47,8 @@ final case class AdminServer[F[_]: Async](
 end AdminServer
 
 object AdminServer:
-    val baseEndpoint = endpoint.in("admin").errorOut(PillarsError.View.output)
+    val baseEndpoint: Endpoint[Unit, Unit, (StatusCode, PillarsError.View), Unit, Any] =
+        endpoint.in("admin").errorOut(PillarsError.View.output)
 
     final case class Config(
         enabled: Boolean,

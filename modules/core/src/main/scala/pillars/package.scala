@@ -10,7 +10,7 @@ import com.monovore.decline.Argument
 import fs2.io.file.Path
 
 given Argument[Path] with
-    def read(string: String) = Validated.valid(Path(string))
+    def read(string: String): Validated[Nothing, Path] = Validated.valid(Path(string))
 
     def defaultMetavar = "path"
 
