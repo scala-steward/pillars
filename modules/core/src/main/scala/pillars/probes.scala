@@ -17,6 +17,7 @@ import io.circe.derivation.Configuration
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import pillars.AdminServer.baseEndpoint
+import pillars.Observability.toAttribute
 import pillars.codec.given
 import pillars.probes.Component.Name
 import pillars.probes.endpoints.*
@@ -57,7 +58,8 @@ object probes:
     end ProbeManager
 
     object ProbeManager:
-        def build[F[_]: Async](modules: Modules[F]): Resource[F, ProbeManager[F]] =
+        def build[F[_]: Async](modules: Modules[F], observability: Observability[F]): Resource[F, ProbeManager[F]] =
+            import observability.*
             Resource.eval:
                 val probes = modules.all.flatMap(_.probes).toList
                 val limits = probes.map(c => c.component -> c.config.failureCount).toMap
@@ -67,15 +69,20 @@ object probes:
                             Stream
                                 .fixedRate(probe.config.interval)
                                 .evalMap: _ =>
-                                    probe.check
-                                        .attemptTap:
-                                            case Right(value) if value =>
-                                                componentErrors(probe.component).update(_ => 0.some)
-                                            case _                     =>
-                                                componentErrors(probe.component).update:
-                                                    case Some(value) => Some(value + 1)
-                                                    case None        => Some(1)
-                                        .void
+                                    def incrementErrorCount =
+                                        componentErrors(probe.component).update:
+                                            case Some(value) => Some(value + 1)
+                                            case None        => Some(1)
+
+                                    observability.span(s"[${probe.component.name}] probe").surround:
+                                        probe.check
+                                            .attemptTap:
+                                                case Right(value) if value =>
+                                                    componentErrors(probe.component).update(_ => 0.some)
+                                                case Left(e)               =>
+                                                    observability.recordException(e) *> incrementErrorCount
+                                                case _                     => incrementErrorCount
+                                            .void
                     new ProbeManager[F]:
                         def start(): F[Unit] = Stream(streams*).parJoinUnbounded.compile.drain
 
@@ -93,6 +100,7 @@ object probes:
                         def globalStatus: F[Status] =
                             status.map(_.values.toList.foldLeft(Status.pass)(_ |+| _))
                     end new
+        end build
     end ProbeManager
     enum Status:
         case pass, warn, fail

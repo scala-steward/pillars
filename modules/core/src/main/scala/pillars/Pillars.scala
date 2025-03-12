@@ -93,7 +93,7 @@ object Pillars:
             _              <- Resource.eval(_logger.info("Loading modules..."))
             _modules       <- loadModules(modules, context)
             _              <- Resource.eval(_logger.debug(s"Loaded ${_modules.size} modules"))
-            probes         <- ProbeManager.build[F](_modules)
+            probes         <- ProbeManager.build[F](_modules, obs)
             _              <- Spawn[F].background(probes.start())
             _              <- Spawn[F].background:
                                   AdminServer[F](_config.admin, infos, obs, _modules.adminControllers :+ probesController(probes))
