@@ -27,6 +27,7 @@ import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.sdk.OpenTelemetrySdk
 import org.typelevel.otel4s.sdk.TelemetryResource
 import org.typelevel.otel4s.sdk.exporter.otlp.autoconfigure.OtlpExportersAutoConfigure
+import org.typelevel.otel4s.trace.StatusCode
 import org.typelevel.otel4s.trace.Tracer
 import sttp.tapir.Endpoint
 import sttp.tapir.model.ServerRequest
@@ -34,10 +35,19 @@ import sttp.tapir.server.interceptor.EndpointInterceptor
 import sttp.tapir.server.interceptor.Interceptor
 import sttp.tapir.server.model.ServerResponse
 
-final case class Observability[F[_]](tracer: Tracer[F], metrics: Meter[F], interceptor: Interceptor[F]):
+final case class Observability[F[_]: Async](tracer: Tracer[F], metrics: Meter[F], interceptor: Interceptor[F]):
     export metrics.*
     export tracer.span
     export tracer.spanBuilder
+
+    def recordException(error: Throwable): F[Unit] =
+        for
+            span <- tracer.currentSpanOrNoop
+            _    <- span.recordException(error)
+            _    <- span.setStatus(StatusCode.Error, error.getMessage)
+            _    <- span.addAttribute(Attribute("error.type", error.getClass.getCanonicalName))
+        yield ()
+
 end Observability
 object Observability:
     def apply[F[_]: Pillars]: Run[F, Observability[F]]   = Pillars[F].observability
@@ -182,7 +192,7 @@ object Observability:
             OtelAttributes
                 .newBuilder
                 .addOne[Boolean]("error", true)
-                .addOne("error.type", error.getClass.getName)
+                .addOne("error.type", error.getClass.getCanonicalName)
                 .result()
     end Attributes
 end Observability

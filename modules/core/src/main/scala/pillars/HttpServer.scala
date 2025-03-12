@@ -21,6 +21,7 @@ import org.http4s.server.Server
 import org.http4s.server.middleware.CORS
 import org.http4s.server.middleware.ErrorHandling
 import org.http4s.server.middleware.Logger
+import org.typelevel.otel4s.trace.StatusCode
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Controller.HttpEndpoint
 import pillars.codec.given
@@ -47,9 +48,22 @@ object HttpServer:
         observability: Observability[F],
         endpoints: List[HttpEndpoint[F]]
     ): Resource[F, Server] =
-        val cors: HttpApp[F] => HttpApp[F]          = CORS.policy.httpApp[F]
-        val errorHandling: HttpApp[F] => HttpApp[F] = ErrorHandling.Custom.recoverWith(_)(buildExceptionHandler())
-        val logging                                 =
+        val cors: HttpApp[F] => HttpApp[F] = CORS.policy.httpApp[F]
+
+        val errorHandling: HttpApp[F] => HttpApp[F] = ErrorHandling.Custom.recoverWith(_):
+            case e: PillarsError =>
+                observability.recordException(e).map: _ =>
+                    Response(
+                      Status.fromInt(e.status.code).getOrElse(Status.InternalServerError),
+                      HttpVersion.`HTTP/1.1`
+                    )
+                        .withEntity(e.view)
+            case e: Throwable    =>
+                observability.recordException(e).map: _ =>
+                    Response(Status.InternalServerError, HttpVersion.`HTTP/1.1`)
+                        .withEntity(PillarsError.fromThrowable(e).view)
+
+        val logging =
             if config.logging.enabled then
                 Logger.httpApp[F](
                   logHeaders = config.logging.headers,
@@ -96,13 +110,13 @@ object HttpServer:
             ): F[Option[ValuedEndpointOutput[?]]] =
                 def handlePillarsError(e: PillarsError) =
                     Some(ValuedEndpointOutput(statusCode.and(jsonBody[PillarsError.View]), (e.status, e.view)))
-
                 tracer
                     .currentSpanOrNoop
                     .flatMap: span =>
                         for
-                            _ <- span.addEvent("Handle exception")
+                            _ <- span.recordException(ctx.e)
                             _ <- span.addAttributes(Observability.Attributes.fromError(ctx.e))
+                            _ <- span.setStatus(StatusCode.Error, ctx.e.getMessage)
                         yield ctx.e match
                             case e: PillarsError                            =>
                                 handlePillarsError(e)
@@ -111,20 +125,6 @@ object HttpServer:
                             case _                                          =>
                                 handlePillarsError(PillarsError.fromThrowable(ctx.e))
             end apply
-
-    private def buildExceptionHandler[F[_]: Applicative](): PartialFunction[Throwable, F[Response[F]]] =
-        case e: PillarsError =>
-            Response(
-              Status.fromInt(e.status.code).getOrElse(Status.InternalServerError),
-              HttpVersion.`HTTP/1.1`
-            )
-                .withEntity(e.view)
-                .pure[F]
-        case e: Throwable    =>
-            Response(Status.InternalServerError, HttpVersion.`HTTP/1.1`)
-                .withEntity(PillarsError.fromThrowable(e).view)
-                .pure[F]
-    end buildExceptionHandler
 
     final case class Config(
         host: Host,
