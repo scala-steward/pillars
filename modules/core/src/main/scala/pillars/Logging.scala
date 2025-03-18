@@ -9,9 +9,6 @@ import cats.effect.*
 import cats.syntax.all.*
 import fs2.io.file.Path
 import io.circe.*
-import io.circe.Codec
-import io.circe.Decoder
-import io.circe.Encoder
 import io.circe.derivation.Configuration
 import io.circe.syntax.*
 import io.github.iltotore.iron.*

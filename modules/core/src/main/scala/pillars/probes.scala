@@ -11,8 +11,6 @@ import cats.effect.std.MapRef
 import cats.syntax.all.*
 import fs2.Stream
 import io.circe.*
-import io.circe.Decoder
-import io.circe.Encoder
 import io.circe.derivation.Configuration
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
