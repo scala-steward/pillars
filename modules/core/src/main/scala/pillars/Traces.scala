@@ -34,21 +34,22 @@ final case class Traces[F[_]: Async](tracer: Tracer[F]) extends EndpointIntercep
                 monad: MonadError[F],
                 bodyListener: BodyListener[F, B]
             ): F[Option[ServerResponse[B]]] =
-                tracer
-                    .spanBuilder(spanName(ctx.endpoint))
-                    .withSpanKind(SpanKind.Server)
-                    .addAttributes(Observability.Attributes.fromTapirRequest(ctx.request))
-                    .addAttributes(Observability.Attributes.fromTapirEndpoint(ctx.endpoint))
-                    .build
-                    .use: span =>
-                        for
-                            _        <- span.addEvent("Send request")
-                            response <- handle(span, endpointHandler.onDecodeFailure(ctx))
-                            _        <- response.traverse_(r =>
-                                            span.addAttributes(Observability.Attributes.fromTapirResponse(r))
-                                        )
-                            _        <- span.addEvent("Request received")
-                        yield response
+                tracer.joinOrRoot(ctx.request.headers.map(h => h.name -> h.value).toMap):
+                    tracer
+                        .spanBuilder(spanName(ctx.endpoint))
+                        .withSpanKind(SpanKind.Server)
+                        .addAttributes(Observability.Attributes.fromTapirRequest(ctx.request))
+                        .addAttributes(Observability.Attributes.fromTapirEndpoint(ctx.endpoint))
+                        .build
+                        .use: span =>
+                            for
+                                _        <- span.addEvent("Send request")
+                                response <- handle(span, endpointHandler.onDecodeFailure(ctx))
+                                _        <- response.traverse_(r =>
+                                                span.addAttributes(Observability.Attributes.fromTapirResponse(r))
+                                            )
+                                _        <- span.addEvent("Request received")
+                            yield response
 
             override def onSecurityFailure[A](ctx: SecurityFailureContext[F, A])(using
                 monad: MonadError[F],
@@ -61,19 +62,20 @@ final case class Traces[F[_]: Async](tracer: Tracer[F]) extends EndpointIntercep
                 request: ServerRequest,
                 execution: F[ServerResponse[O]]
             ): F[ServerResponse[O]] =
-                tracer
-                    .spanBuilder(spanName(endpoint))
-                    .withSpanKind(SpanKind.Server)
-                    .addAttributes(Observability.Attributes.fromTapirRequest(request))
-                    .addAttributes(Observability.Attributes.fromTapirEndpoint(endpoint))
-                    .build
-                    .use: span =>
-                        for
-                            _        <- span.addEvent("Send request")
-                            response <- handle(span, execution)
-                            _        <- span.addAttributes(Observability.Attributes.fromTapirResponse(response))
-                            _        <- span.addEvent("Request received")
-                        yield response
+                tracer.joinOrRoot(request.headers.map(h => h.name -> h.value).toMap):
+                    tracer
+                        .spanBuilder(spanName(endpoint))
+                        .withSpanKind(SpanKind.Server)
+                        .addAttributes(Observability.Attributes.fromTapirRequest(request))
+                        .addAttributes(Observability.Attributes.fromTapirEndpoint(endpoint))
+                        .build
+                        .use: span =>
+                            for
+                                _        <- span.addEvent("Send request")
+                                response <- handle(span, execution)
+                                _        <- span.addAttributes(Observability.Attributes.fromTapirResponse(response))
+                                _        <- span.addEvent("Request received")
+                            yield response
 
             private def spanName(endpoint: Endpoint[?, ?, ?, ?, ?]): String =
                 s"${endpoint.method.map(_.method).getOrElse("*")} ${endpoint.showPathTemplate(showQueryParam = None)}"

@@ -4,7 +4,6 @@
 
 package pillars
 
-import cats.Applicative
 import cats.effect.Async
 import cats.effect.Resource
 import cats.syntax.all.*

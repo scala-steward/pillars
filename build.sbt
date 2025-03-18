@@ -33,7 +33,7 @@ ThisBuild / autoAPIMappings          := true
 lazy val sharedSettings = Seq(
   scalaVersion   := versions.scala,
   scalacOptions ++= Seq(
-    "-source:3.6-migration"
+    "-source:3.7"
   ),
   libraryDependencies ++= Seq(
     "org.scalameta" %% "munit" % versions.munit.core % Test

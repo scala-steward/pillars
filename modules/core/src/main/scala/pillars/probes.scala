@@ -17,7 +17,6 @@ import io.circe.derivation.Configuration
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import pillars.AdminServer.baseEndpoint
-import pillars.Observability.toAttribute
 import pillars.codec.given
 import pillars.probes.Component.Name
 import pillars.probes.endpoints.*
