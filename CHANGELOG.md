@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.5.1] - 2025-03-19
+### :sparkles: New Features
+- [`f409b88`](https://github.com/FunktionalIO/pillars/commit/f409b88cb3c4fa285c9c6cbf32818999a867d1d9) - upgrade source to scala 3.6 syntax *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`a18bfff`](https://github.com/FunktionalIO/pillars/commit/a18bfffcd56be5eca3ebd3d69edc26d366735683) - add traces in probe checks *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`d5432d1`](https://github.com/FunktionalIO/pillars/commit/d5432d1409dc2e00c4d2e7e74d201dd0c07aba88) - **observability**: join distributed trace when opening endpoint spans *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+
+### :bug: Bug Fixes
+- [`96ad225`](https://github.com/FunktionalIO/pillars/commit/96ad2251499177b591426d43683b9255ecdc3fb6) - mark correctly span as errors when exception *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+
+### :wrench: Chores
+- [`6047287`](https://github.com/FunktionalIO/pillars/commit/60472872aa334053dfb515a70090088764dad754) - **deps**: update ncipollo/release-action to 1.16.0 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`3c3b9ee`](https://github.com/FunktionalIO/pillars/commit/3c3b9ee3a298e48b7f4f3b8e2f85127f46a6ee65) - Update testcontainers-scala-jdbc, ... from 0.41.8 to 0.43.0 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`6c4cb00`](https://github.com/FunktionalIO/pillars/commit/6c4cb00d40991bfa689cd40b140cb7b466bce330) - Upgrade tapir from 1.11.17 to 1.11.19, circe from 0.14.10 to 0.14.12, flywaydb from 11.3.4 to 11.4.0, sbt from 1.10.10 to 1.10.11, scalafmt from 3.9.3 to 3.9.4 *(PR [#221](https://github.com/FunktionalIO/pillars/pull/221) by [@scala-steward](https://github.com/scala-steward))*
+- [`1a6e8c1`](https://github.com/FunktionalIO/pillars/commit/1a6e8c14942c1785185824437605fb0f2c25b8fc) - Upgrade to scala 3.6.4 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.5.0] - 2025-03-09
 ### :boom: BREAKING CHANGES
 - due to [`026041c`](https://github.com/FunktionalIO/pillars/commit/026041cc843e2c5c2a86378b8ae6617fed715712) - Move to io.funktional org *(PR [#218](https://github.com/FunktionalIO/pillars/pull/218) by [@rlemaitre](https://github.com/rlemaitre))*:
@@ -379,3 +395,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.4.4]: https://github.com/FunktionalIO/pillars/compare/v0.4.3...v0.4.4
 [v0.4.5]: https://github.com/FunktionalIO/pillars/compare/v0.4.4...v0.4.5
 [v0.5.0]: https://github.com/FunktionalIO/pillars/compare/v0.4.5...v0.5.0
+[v0.5.1]: https://github.com/FunktionalIO/pillars/compare/v0.5.0...v0.5.1
