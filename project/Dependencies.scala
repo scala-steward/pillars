@@ -1,19 +1,19 @@
 import sbt.*
 
 object versions {
-    val scala            = "3.6.4"
+    val scala            = "3.3.5"
     // Dependencies
     val cats             = "2.13.0"
-    val catsEffect       = "3.5.7"
+    val catsEffect       = "3.6.0"
     val circe            = "0.14.12"
     val circeYaml        = "0.15.3"
     val decline          = "2.5.0"
     val doobie           = "1.0.0-RC8"
-    val flyway           = "11.4.0"
-    val fs2              = "3.11.0"
-    val fs2Rabbit        = "5.4.0"
+    val flyway           = "11.5.0"
+    val fs2              = "3.12.0"
+    val fs2Rabbit        = "5.2.0"
     val http4s           = "0.23.30"
-    val http4sNetty      = "0.5.22"
+    val http4sNetty      = "0.5.23"
     val ip4s             = "3.6.0"
     val iron             = "2.6.0"
     val literally        = "1.2.0"
@@ -23,7 +23,7 @@ object versions {
     val rediculous       = "0.5.1"
     val scribe           = "3.16.0"
     val skunk            = "1.0.0-M10"
-    val tapir            = "1.11.19"
+    val tapir            = "1.11.20"
     val testContainers   = "0.43.0"
 
     object munit {
