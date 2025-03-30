@@ -7,6 +7,8 @@ package pillars
 import cats.Parallel
 import cats.effect.*
 import cats.effect.std.Console
+import cats.effect.std.Env
+import cats.effect.std.SystemProperties
 import cats.syntax.all.*
 import fs2.io.file.Path
 import fs2.io.net.Network
@@ -77,7 +79,7 @@ object Pillars:
      * @param path The path to the configuration file.
      * @return a resource that will create a new instance of Pillars.
      */
-    def apply[F[_]: LiftIO: Async: Console: Network: Parallel](
+    def apply[F[_]: LiftIO: Async: Console: Network: Parallel: Env: SystemProperties](
         infos: AppInfo,
         modules: Seq[ModuleSupport],
         path: Path

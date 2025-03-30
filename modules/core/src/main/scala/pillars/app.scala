@@ -7,6 +7,8 @@ package pillars
 import cats.Parallel
 import cats.effect.{IOApp as CEIOApp, *}
 import cats.effect.std.Console
+import cats.effect.std.Env
+import cats.effect.std.SystemProperties
 import cats.syntax.all.*
 import com.monovore.decline.Command
 import com.monovore.decline.Opts
@@ -19,7 +21,7 @@ import pillars.App.Name
 import pillars.App.Version
 import pillars.probes.Probe
 
-abstract class App[F[_]: LiftIO: Async: Console: Network: Parallel](val modules: ModuleSupport*):
+abstract class App[F[_]: LiftIO: Async: Console: Network: Parallel: Env: SystemProperties](val modules: ModuleSupport*):
     def infos: AppInfo
     def probes: List[Probe[F]]                = Nil
     def adminControllers: List[Controller[F]] = Nil

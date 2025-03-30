@@ -9,6 +9,8 @@ import cats.effect.Async
 import cats.effect.LiftIO
 import cats.effect.Resource
 import cats.effect.std.Console
+import cats.effect.std.Env
+import cats.effect.std.SystemProperties
 import cats.effect.syntax.all.*
 import cats.syntax.all.*
 import io.circe.Codec
@@ -54,7 +56,10 @@ object Observability:
     def noop[F[_]: LiftIO: Async]: F[Observability[F]] =
         Observability(Tracer.noop[F], Meter.noop[F], EndpointInterceptor.noop[F]).pure[F]
 
-    def init[F[_]: LiftIO: Async: Parallel: Console](appInfo: AppInfo, config: Config): Resource[F, Observability[F]] =
+    def init[F[_]: LiftIO: Async: Parallel: Console: Env: SystemProperties](
+        appInfo: AppInfo,
+        config: Config
+    ): Resource[F, Observability[F]] =
         if config.isEnabled then
             for
                 otel4s       <- OpenTelemetrySdk.autoConfigured[F]: builder =>
