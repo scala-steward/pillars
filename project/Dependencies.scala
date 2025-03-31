@@ -15,7 +15,7 @@ object versions {
     val http4s           = "0.23.30"
     val http4sNetty      = "0.5.23"
     val ip4s             = "3.6.0"
-    val iron             = "2.6.0"
+    val iron             = "3.0.0"
     val literally        = "1.2.0"
     val openApiCirce     = "0.11.3"
     val otel4s           = "0.12.0"
