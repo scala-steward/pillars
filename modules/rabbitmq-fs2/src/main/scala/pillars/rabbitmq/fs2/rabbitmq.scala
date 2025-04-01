@@ -94,7 +94,7 @@ case class RabbitMQConfig(
 
 object RabbitMQConfig:
     final case class Node(host: Host, port: Port) extends pillars.Config derives Codec.AsObject
-    given Configuration         = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+    given Configuration         = pillars.Config.defaultCirceConfig
     given Codec[RabbitMQConfig] = Codec.AsObject.derivedConfigured
 
     given Conversion[RabbitMQConfig.Node, Fs2RabbitNodeConfig] =

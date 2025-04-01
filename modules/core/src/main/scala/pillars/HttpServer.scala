@@ -108,31 +108,25 @@ object HttpServer:
             ): IO[Option[ValuedEndpointOutput[?]]] =
                 def handlePillarsError(e: PillarsError) =
                     Some(ValuedEndpointOutput(statusCode.and(jsonBody[PillarsError.View]), (e.status, e.view)))
-                tracer
-                    .currentSpanOrNoop
+                tracer.currentSpanOrNoop
                     .flatMap: span =>
                         for
                             _ <- span.recordException(ctx.e)
                             _ <- span.addAttributes(Observability.Attributes.fromError(ctx.e))
                             _ <- span.setStatus(StatusCode.Error, ctx.e.getMessage)
                         yield ctx.e match
-                            case e: PillarsError                            =>
-                                handlePillarsError(e)
+                            case e: PillarsError                            => handlePillarsError(e)
                             case StreamMaxLengthExceededException(maxBytes) =>
                                 handlePillarsError(PillarsError.PayloadTooLarge(maxBytes))
                             case _                                          =>
                                 handlePillarsError(PillarsError.fromThrowable(ctx.e))
             end apply
 
-    final case class Config(
-        host: Host,
-        port: Port,
-        logging: Logging.HttpConfig = Logging.HttpConfig()
-    ) extends pillars.Config
+    final case class Config(host: Host, port: Port, logging: Logging.HttpConfig = Logging.HttpConfig())
+        extends pillars.Config
 
     object Config:
-        given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
-
+        given Configuration         = pillars.Config.defaultCirceConfig
         given Codec[Config.OpenAPI] = Codec.AsObject.derivedConfigured
         given Codec[Config]         = Codec.AsObject.derivedConfigured
 
@@ -144,6 +138,5 @@ object HttpServer:
             useRelativePaths: Boolean = true,
             showExtensions: Boolean = false
         )
-
     end Config
 end HttpServer

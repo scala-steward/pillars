@@ -92,7 +92,7 @@ object Observability:
     end Config
 
     object Config:
-        given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+        given Configuration = pillars.Config.defaultCirceConfig
         given Codec[Config] = Codec.AsObject.derivedConfigured
 
         final case class Metrics(

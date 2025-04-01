@@ -96,8 +96,7 @@ final case class MigrationConfig(
     baselineVersion: String = "0"
 ) extends pillars.Config
 object MigrationConfig:
-    given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
-
+    given Configuration          = pillars.Config.defaultCirceConfig
     given Codec[MigrationConfig] = Codec.AsObject.derivedConfigured
 
 private type JdbcUrlConstraint =

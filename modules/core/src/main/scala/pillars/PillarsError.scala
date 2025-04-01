@@ -17,6 +17,8 @@ import sttp.tapir.Schema
 import sttp.tapir.json.circe.jsonBody
 import sttp.tapir.statusCode
 
+type HttpErrorResponse = (StatusCode, PillarsError.View)
+
 trait PillarsError extends Throwable, NoStackTrace:
     def code: Code
     def number: ErrorNumber
@@ -25,7 +27,7 @@ trait PillarsError extends Throwable, NoStackTrace:
     def status: StatusCode          = StatusCode.InternalServerError
     override def getMessage: String = f"$code-$number%04d : $message"
 
-    def httpResponse[T]: Either[(StatusCode, PillarsError.View), T] =
+    def httpResponse[T]: Either[HttpErrorResponse, T] =
         Left((status, PillarsError.View(f"$code-$number%04d", message, details)))
 
     def view: PillarsError.View = PillarsError.View(f"$code-$number%04d", message, details)
@@ -39,7 +41,7 @@ object PillarsError:
             case _                   => Unknown(throwable)
     case class View(code: String, message: String, details: Option[String]) derives Codec.AsObject, Schema
     object View:
-        val output: EndpointOutput[(StatusCode, View)] = statusCode.and(jsonBody[View])
+        val output: EndpointOutput[HttpErrorResponse] = statusCode.and(jsonBody[View])
 
     private final case class Unknown(reason: Throwable) extends PillarsError:
         override def code: Code              = Code("ERR")

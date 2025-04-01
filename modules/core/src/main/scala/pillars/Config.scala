@@ -30,6 +30,8 @@ def config(using p: Pillars): Config.PillarsConfig = p.config
 trait Config
 
 object Config:
+    val defaultCirceConfig: Configuration =
+        Configuration.default.withSnakeCaseMemberNames.withSnakeCaseConstructorNames.withDefaults
     case class PillarsConfig(
         name: App.Name,
         log: Logging.Config = Logging.Config(),
@@ -39,7 +41,7 @@ object Config:
     ) extends pillars.Config
 
     object PillarsConfig:
-        given Configuration          = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+        given Configuration          = defaultCirceConfig
         given Decoder[PillarsConfig] = Decoder.derivedConfigured
         given Encoder[PillarsConfig] = Encoder.AsObject.derivedConfigured
     end PillarsConfig
@@ -53,8 +55,7 @@ object Config:
         private def readConfig[T: Decoder](using Files[IO]): Resource[IO, Either[ParsingFailure, Json]] =
             Resource.eval(Files[IO].readUtf8(path)
                 .map(regex.replaceAllIn(_, matcher))
-                .map: input =>
-                    Parser.default.parse(input)
+                .map(Parser.default.parse)
                 .compile
                 .onlyOrError)
 
@@ -75,12 +76,10 @@ object Config:
     end Reader
 
     final case class Redacted[T](value: T) extends AnyVal:
-        override def toString: String =
-            s"REDACTED"
+        override def toString: String = s"REDACTED"
 
     object Redacted:
         given [T: Decoder: Show]: Decoder[Redacted[T]] = summon[Decoder[T]].map(Redacted.apply)
-
         given [T: Encoder: Show]: Encoder[Redacted[T]] = summon[Encoder[T]].contramap(_.value)
     end Redacted
 
@@ -92,7 +91,6 @@ object Config:
 
     object Secret:
         given [T: Decoder]: Decoder[Secret[T]] = summon[Decoder[T]].map(Secret.apply)
-
         given [T: Encoder]: Encoder[Secret[T]] = summon[Encoder[T]].contramap(_.value)
     end Secret
 

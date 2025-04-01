@@ -20,7 +20,6 @@ import pillars.probes.endpoints.*
 import pillars.probes.views.CheckStatus
 import pillars.probes.views.HealthStatus
 import scala.concurrent.duration.*
-import sttp.model.StatusCode
 import sttp.tapir.Endpoint
 import sttp.tapir.Schema
 import sttp.tapir.given
@@ -62,8 +61,7 @@ object probes:
                 MapRef.ofConcurrentHashMap[IO, Component, Int]().map: componentErrors =>
                     val streams: List[Stream[IO, Unit]] =
                         probes.map: probe =>
-                            Stream
-                                .fixedRate[IO](probe.config.interval)
+                            Stream.fixedRate[IO](probe.config.interval)
                                 .evalMap: _ =>
                                     def incrementErrorCount =
                                         componentErrors(probe.component).update:
@@ -142,8 +140,7 @@ object probes:
     ) extends pillars.Config
 
     object ProbeConfig:
-        given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
-
+        given Configuration      = pillars.Config.defaultCirceConfig
         given Codec[ProbeConfig] = Codec.AsObject.derivedConfigured
     end ProbeConfig
 
@@ -159,17 +156,17 @@ object probes:
     end probesController
 
     object endpoints:
-        private val prefix                                                               = baseEndpoint.in("probes")
-        def liveness: Endpoint[Unit, Unit, (StatusCode, PillarsError.View), String, Any] =
+        private val prefix                                                 = baseEndpoint.in("probes")
+        def liveness: Endpoint[Unit, Unit, HttpErrorResponse, String, Any] =
             prefix.get.in("healthz").description("Liveness probe").out(stringBody)
 
-        def readiness: Endpoint[Unit, Unit, (StatusCode, PillarsError.View), HealthStatus, Any] =
+        def readiness: Endpoint[Unit, Unit, HttpErrorResponse, HealthStatus, Any] =
             prefix.get
                 .in("health")
                 .description("Readiness probe")
                 .out(jsonBody[HealthStatus])
 
-        def all: Seq[Endpoint[Unit, Unit, (StatusCode, PillarsError.View), ?, Any]] = List(liveness, readiness)
+        def all: Seq[Endpoint[Unit, Unit, HttpErrorResponse, ?, Any]] = List(liveness, readiness)
     end endpoints
     object views:
         final case class HealthStatus(status: Status, checks: List[CheckStatus]) derives Codec.AsObject, Schema

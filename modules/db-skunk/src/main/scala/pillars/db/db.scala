@@ -113,7 +113,7 @@ final case class DatabaseConfig(
 ) extends pillars.Config
 
 object DatabaseConfig:
-    given Configuration         = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+    given Configuration         = pillars.Config.defaultCirceConfig
     given Codec[DatabaseConfig] = Codec.AsObject.derivedConfigured
     import pillars.Logging.Config.given
     given Codec[LoggingConfig]  = Codec.AsObject.derivedConfigured

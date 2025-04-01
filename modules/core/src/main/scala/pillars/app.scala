@@ -41,17 +41,14 @@ abstract class IOApp(override val modules: ModuleSupport*) extends App(modules*)
 object App:
     private type NameConstraint = Not[Blank]
     opaque type Name <: String  = String :| NameConstraint
-
     object Name extends RefinedTypeOps[String, NameConstraint, Name]
 
     private type VersionConstraint = SemanticVersion
     opaque type Version <: String  = String :| VersionConstraint
-
     object Version extends RefinedTypeOps[String, VersionConstraint, Version]
 
     private type DescriptionConstraint = Not[Blank]
     opaque type Description <: String  = String :| DescriptionConstraint
-
     object Description extends RefinedTypeOps[String, DescriptionConstraint, Description]
 end App
 

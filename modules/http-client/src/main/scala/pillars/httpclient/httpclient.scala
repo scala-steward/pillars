@@ -136,7 +136,7 @@ object HttpClient extends ModuleSupport:
     ) extends pillars.Config
 
     object Config:
-        given Configuration         = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+        given Configuration         = pillars.Config.defaultCirceConfig
         given Decoder[`User-Agent`] = Decoder.decodeString.emap(s =>
             `User-Agent`.parse(10)(s).leftMap(f => s"Invalid User-Agent '$s': ${f.message}")
         )

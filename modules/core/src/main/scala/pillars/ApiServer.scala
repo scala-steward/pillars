@@ -22,30 +22,22 @@ trait ApiServer:
     def start(endpoints: List[HttpEndpoint]): IO[Unit]
 
     @targetName("startWithEndpoints")
-    def start(endpoints: HttpEndpoint*): IO[Unit] =
-        start(endpoints.toList)
+    def start(endpoints: HttpEndpoint*): IO[Unit] = start(endpoints.toList)
 
     @targetName("startWithControllers")
-    def start(controllers: Controller*): IO[Unit] =
-        start(controllers.toList.flatten)
+    def start(controllers: Controller*): IO[Unit] = start(controllers.toList.flatten)
 
 end ApiServer
 
 def server(using p: Pillars): Run[ApiServer] = p.apiServer
 
 object ApiServer:
-    def init(
-        config: Config,
-        infos: AppInfo,
-        observability: Observability,
-        logger: Scribe[IO]
-    ): ApiServer =
+    def init(config: Config, infos: AppInfo, observability: Observability, logger: Scribe[IO]): ApiServer =
         (endpoints: List[HttpEndpoint]) =>
             IO.whenA(config.enabled):
                 for
                     _ <- logger.info(s"Starting API server on ${config.http.host}:${config.http.port}")
-                    _ <- HttpServer
-                             .build("api", config.http, config.openApi, infos, observability, endpoints)
+                    _ <- HttpServer.build("api", config.http, config.openApi, infos, observability, endpoints)
                              .onFinalizeCase:
                                  case ExitCase.Errored(e) => logger.error(s"API server stopped with error: $e")
                                  case _                   => logger.info("API server stopped")
@@ -62,14 +54,10 @@ object ApiServer:
         openApi: HttpServer.Config.OpenAPI = HttpServer.Config.OpenAPI()
     ) extends pillars.Config
 
-    given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+    given Configuration = pillars.Config.defaultCirceConfig
     given Codec[Config] = Codec.AsObject.derivedConfigured
 
-    private val defaultHttp = HttpServer.Config(
-      host = host"0.0.0.0",
-      port = port"9876",
-      logging = Logging.HttpConfig()
-    )
+    private val defaultHttp = HttpServer.Config(host = host"0.0.0.0", port = port"9876", logging = Logging.HttpConfig())
 
     def noop: ApiServer = _ => IO.unit
 end ApiServer

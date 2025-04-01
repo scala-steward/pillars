@@ -15,7 +15,8 @@ import io.github.iltotore.iron.*
 import io.github.iltotore.iron.circe.given
 import io.github.iltotore.iron.constraint.all.*
 import org.typelevel.otel4s.trace.Tracer
-import pillars.Config.Secret
+import pillars.Config
+import pillars.Config.*
 import pillars.Module
 import pillars.ModuleDef
 import pillars.Modules
@@ -75,10 +76,10 @@ case class $Prefix$Config(
     port: Port = port"5672",
     username: Option[$Prefix$User] = None,
     password: Option[Secret[$Prefix$Password]] = None
-)
+) extends Config
 
 object $Prefix$Config:
-    given Configuration         = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+    given Configuration         = defaultCirceConfig
     given Codec[$Prefix$Config] = Codec.AsObject.derivedConfigured
 end $Prefix$Config
 

@@ -38,10 +38,8 @@ object graph:
             end loop
 
             val missing = items.flatMap(dependencies).toSet -- items.toSet
-            if missing.nonEmpty then
-                Left(GraphError.MissingDependency(missing))
-            else
-                loop(items, List.empty, Set.empty, Set.empty)
+            if missing.nonEmpty then Left(GraphError.MissingDependency(missing))
+            else loop(items, List.empty, Set.empty, Set.empty)
     end extension
 
     enum GraphError(val number: ErrorNumber) extends PillarsError:
@@ -53,9 +51,7 @@ object graph:
         override def message: Message = this match
             case GraphError.CyclicDependencyError      => Message("Cyclic dependency found")
             case GraphError.MissingDependency(missing) =>
-                if missing.size == 1 then
-                    Message(s"Missing dependency: ${missing.head}".assume)
-                else
-                    Message(s"${missing.size} missing dependencies: ${missing.mkString(", ")}".assume)
+                if missing.size == 1 then Message(s"Missing dependency: ${missing.head}".assume)
+                else Message(s"${missing.size} missing dependencies: ${missing.mkString(", ")}".assume)
     end GraphError
 end graph

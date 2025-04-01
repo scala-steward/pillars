@@ -92,7 +92,7 @@ final case class RedisConfig(
 ) extends pillars.Config
 
 object RedisConfig:
-    given Configuration      = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+    given Configuration      = pillars.Config.defaultCirceConfig
     given Codec[RedisConfig] = Codec.AsObject.derivedConfigured
 end RedisConfig
 

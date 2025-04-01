@@ -98,7 +98,7 @@ final case class DatabaseConfig(
 end DatabaseConfig
 
 object DatabaseConfig:
-    given Configuration         = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+    given Configuration         = pillars.Config.defaultCirceConfig
     given Codec[DatabaseConfig] = Codec.AsObject.derivedConfigured
 end DatabaseConfig
 
@@ -109,8 +109,7 @@ final case class StatementCacheConfig(
 )
 
 object StatementCacheConfig:
-    given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
-
+    given Configuration               = pillars.Config.defaultCirceConfig
     given Codec[StatementCacheConfig] = Codec.AsObject.derivedConfigured
 end StatementCacheConfig
 

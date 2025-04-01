@@ -30,11 +30,8 @@ object Logging:
           scribe.Logger.root
               .clearHandlers()
               .clearModifiers()
-              .withHandler(
-                formatter = config.format.formatter,
-                minimumLevel = Some(config.level),
-                writer = writer(config)
-              ).replace()
+              .withHandler(config.format.formatter, writer(config), Some(config.level))
+              .replace()
         ).void
 
     private def writer(config: Config): Writer =
@@ -73,17 +70,10 @@ object Logging:
 
         given Encoder[Format] = Encoder.encodeString.contramap(_.toString.toLowerCase)
 
-        given Decoder[Format] = Decoder.decodeString.emap {
-            case "json"     => Right(Format.Json)
-            case "simple"   => Right(Format.Simple)
-            case "colored"  => Right(Format.Colored)
-            case "classic"  => Right(Format.Classic)
-            case "compact"  => Right(Format.Compact)
-            case "enhanced" => Right(Format.Enhanced)
-            case "advanced" => Right(Format.Advanced)
-            case "strict"   => Right(Format.Strict)
-            case other      => Left(s"Unknown output format: $other")
-        }
+        given Decoder[Format] = Decoder.decodeString.emap: s =>
+            Format.values.find(_.toString.equalsIgnoreCase(s)) match
+                case Some(format) => Right(format)
+                case None         => Left(s"Unknown output format: $s")
     end Format
 
     enum Output:
@@ -130,13 +120,10 @@ object Logging:
     ) extends pillars.Config
 
     object Config:
-        given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
-
+        given Configuration  = pillars.Config.defaultCirceConfig
         given Decoder[Level] = Decoder.decodeString.emap(s => Level.get(s).toRight(s"Invalid log level $s"))
-
         given Encoder[Level] = Encoder.encodeString.contramap(_.name)
-
-        given Codec[Config] = Codec.AsObject.derivedConfigured
+        given Codec[Config]  = Codec.AsObject.derivedConfigured
     end Config
 
     final case class HttpConfig(
