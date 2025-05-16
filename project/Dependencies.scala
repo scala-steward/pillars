@@ -4,7 +4,7 @@ object versions {
     val scala            = "3.3.6"
     // Dependencies
     val cats             = "2.13.0"
-    val catsEffect       = "3.6.0"
+    val catsEffect       = "3.6.1"
     val circe            = "0.14.13"
     val circeYaml        = "0.15.3"
     val decline          = "2.5.0"
